@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import IntroScreen from "../components/IntroScreen.jsx";
 import AxisSelector from "../components/AxisSelector.jsx";
 import PowerWheel from "../components/PowerWheel.jsx";
@@ -12,6 +12,37 @@ export default function SelfReflection() {
   const [axisIndex, setAxisIndex] = useState(0);
   const [selections, setSelections] = useState({});
   const wheelRef = useRef(null);
+
+  useEffect(() => {
+    const id = "wop-survey-layout";
+    if (document.getElementById(id)) return;
+    const el = document.createElement("style");
+    el.id = id;
+    el.textContent = `
+      .wop-survey-layout { display: flex; flex-direction: column; gap: 8px; }
+      .wop-wheel-hero {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        padding: 8px 4px 4px;
+        background: linear-gradient(180deg, #EEF9F4 0%, #FFFFFF 100%);
+        border-bottom: 1px solid #D8E8E2;
+      }
+      @media (min-width: 768px) {
+        .wop-survey-layout { flex-direction: row; align-items: flex-start; gap: 24px; padding-top: 16px; }
+        .wop-wheel-hero {
+          flex: 0 0 48%;
+          position: sticky;
+          top: 12px;
+          border-bottom: none;
+          border-radius: 16px;
+          padding: 16px 8px;
+        }
+        .wop-form-col { flex: 1; min-width: 0; }
+      }
+    `;
+    document.head.appendChild(el);
+  }, []);
 
   const currentAxis = AXES_SELF[axisIndex];
 
@@ -94,9 +125,10 @@ export default function SelfReflection() {
           <div ref={wheelRef} style={styles.wheelBox}>
             <PowerWheel
               variant="dots"
+              size="large"
               selections={selections}
               axes={AXES_SELF}
-              ariaLabel="Jouw wiel van privilege"
+              ariaLabel="Jouw Machtskruising"
             />
           </div>
 
@@ -117,17 +149,19 @@ export default function SelfReflection() {
 
   return (
     <div style={styles.page}>
-      <div style={styles.surveyLayout}>
-        <div style={styles.wheelCol}>
+      <div className="wop-survey-layout" style={styles.surveyLayout}>
+        <div className="wop-wheel-hero">
           <PowerWheel
             variant="dots"
+            size="large"
             selections={selections}
             axes={AXES_SELF}
-            ariaLabel="Jouw wiel — live bijgewerkt"
+            highlightAxisIndex={axisIndex}
+            ariaLabel="Machtskruising — live bijgewerkt"
           />
         </div>
 
-        <div style={styles.formCol}>
+        <div className="wop-form-col" style={styles.formCol}>
           <p style={styles.progress}>
             {copy.progressLabel} {axisIndex + 1} / {AXES_SELF.length}
           </p>
@@ -170,17 +204,9 @@ const styles = {
     color: config.colors.text,
   },
   surveyLayout: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 24,
-    maxWidth: 960,
+    maxWidth: 1100,
     margin: "0 auto",
-    padding: "24px 16px 48px",
-  },
-  wheelCol: {
-    display: "flex",
-    justifyContent: "center",
-    padding: "8px 0",
+    padding: "0 8px 48px",
   },
   formCol: {
     flex: 1,
@@ -225,9 +251,9 @@ const styles = {
     cursor: "pointer",
   },
   resultWrap: {
-    maxWidth: 520,
+    maxWidth: 680,
     margin: "0 auto",
-    padding: "32px 20px 48px",
+    padding: "24px 12px 48px",
     textAlign: "center",
   },
   resultTitle: {
@@ -245,6 +271,9 @@ const styles = {
   },
   wheelBox: {
     marginBottom: 28,
+    padding: "12px 0",
+    background: "linear-gradient(180deg, #EEF9F4 0%, #FFFFFF 100%)",
+    borderRadius: 16,
   },
   actions: {
     display: "flex",

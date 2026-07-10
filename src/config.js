@@ -50,16 +50,16 @@ export const config = {
   },
 
   onderwijs: {
-    title: "Wiel van Privilege",
+    title: "Machtskruising",
     self: {
       subtitle: "Waar sta jij ten opzichte van het machtscentrum?",
       intro:
-        "Dit wiel helpt je te verkennen waar jij — op elf verschillende assen — " +
+        "Machtskruising helpt je te verkennen waar jij — op elf verschillende assen — " +
         "ten opzichte van het machtscentrum staat. Er zijn geen goede of foute antwoorden. " +
         "Je antwoorden blijven volledig op je eigen apparaat; er wordt niets opgeslagen of verstuurd.",
       resultTitle: "Jouw positie",
       resultText:
-        "Dit wiel laat zien waar jij op de elf assen staat. Gebruik het als startpunt " +
+        "Dit kruispunt laat zien waar jij op de elf assen staat. Gebruik het als startpunt " +
         "voor reflectie — niet als oordeel over jezelf of anderen.",
       downloadLabel: "Download als afbeelding",
       restartLabel: "Opnieuw beginnen",
@@ -74,21 +74,36 @@ export const config = {
       subtitle: "Waar zit volgens jou de grootste groep collega's?",
       intro:
         "Geef per as aan waar jij denkt dat de grootste groep collega's zit. " +
-        "Je geeft geen eigen positie aan — alleen je perceptie van de organisatie.",
+        "Je geeft geen eigen positie aan — alleen je perceptie van de organisatie. " +
+        "Je antwoord wordt anoniem opgeteld; er worden geen individuele gegevens bewaard.",
+      startLabel: "Begin organisatiescan",
+      nextLabel: "Volgende",
+      prevLabel: "Vorige",
+      finishLabel: "Versturen",
+      progressLabel: "As",
+      privacyNote:
+        "Alleen tellers worden opgeslagen — nooit jouw individuele antwoorden.",
+      previewNote: "Live voorvertoning van jouw perceptie — niet het org-resultaat.",
+      thankYouTitle: "Bedankt",
+      thankYouText:
+        "Je antwoord telt mee. Het organisatiewiel wordt zichtbaar zodra voldoende " +
+        "collega's hebben bijgedragen.",
+      submittingLabel: "Versturen…",
+      errorLabel: "Versturen mislukt. Probeer het opnieuw.",
     },
   },
 
   zakelijk: {
-    title: "Machtswiel",
+    title: "Machtskruising",
     self: {
       subtitle: "Waar sta jij ten opzichte van het machtscentrum?",
       intro:
-        "Dit machtswiel helpt je te verkennen waar jij — op elf verschillende assen — " +
+        "Machtskruising helpt je te verkennen waar jij — op elf verschillende assen — " +
         "ten opzichte van het machtscentrum staat. Er zijn geen goede of foute antwoorden. " +
         "Je antwoorden blijven volledig op je eigen apparaat; er wordt niets opgeslagen of verstuurd.",
       resultTitle: "Jouw positie",
       resultText:
-        "Dit wiel laat zien waar jij op de elf assen staat. Gebruik het als startpunt " +
+        "Dit kruispunt laat zien waar jij op de elf assen staat. Gebruik het als startpunt " +
         "voor reflectie — niet als oordeel over jezelf of anderen.",
       downloadLabel: "Download als afbeelding",
       restartLabel: "Opnieuw beginnen",
@@ -103,7 +118,22 @@ export const config = {
       subtitle: "Waar zit volgens jou de grootste groep collega's?",
       intro:
         "Geef per as aan waar jij denkt dat de grootste groep collega's zit. " +
-        "Je geeft geen eigen positie aan — alleen je perceptie van de organisatie.",
+        "Je geeft geen eigen positie aan — alleen je perceptie van de organisatie. " +
+        "Je antwoord wordt anoniem opgeteld; er worden geen individuele gegevens bewaard.",
+      startLabel: "Begin scan",
+      nextLabel: "Volgende",
+      prevLabel: "Vorige",
+      finishLabel: "Versturen",
+      progressLabel: "As",
+      privacyNote:
+        "Alleen tellers worden opgeslagen — nooit jouw individuele antwoorden.",
+      previewNote: "Live voorvertoning van jouw perceptie — niet het org-resultaat.",
+      thankYouTitle: "Bedankt",
+      thankYouText:
+        "Je antwoord telt mee. Het organisatiewiel wordt zichtbaar zodra voldoende " +
+        "collega's hebben bijgedragen.",
+      submittingLabel: "Versturen…",
+      errorLabel: "Versturen mislukt. Probeer het opnieuw.",
     },
   },
 };

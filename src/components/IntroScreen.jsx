@@ -1,6 +1,6 @@
 import { config, ATTRIBUTION, getFraming } from "../config.js";
 
-export default function IntroScreen({ mode = "self", onStart }) {
+export default function IntroScreen({ mode = "self", orgCode, onStart }) {
   const framing = getFraming();
   const copy = mode === "self" ? framing.self : framing.team;
 
@@ -9,13 +9,16 @@ export default function IntroScreen({ mode = "self", onStart }) {
       <header style={styles.header}>
         <h1 style={styles.title}>{framing.title}</h1>
         <p style={styles.subtitle}>{copy.subtitle}</p>
+        {orgCode && (
+          <p style={styles.orgCode}>Organisatie: {orgCode}</p>
+        )}
       </header>
 
       <p style={styles.intro}>{copy.intro}</p>
 
       <p style={styles.attribution}>{ATTRIBUTION}</p>
 
-      {mode === "self" && (
+      {copy.privacyNote && (
         <p style={styles.privacy}>{copy.privacyNote}</p>
       )}
 
@@ -50,6 +53,15 @@ const styles = {
     color: config.colors.textMuted,
     margin: 0,
     lineHeight: 1.5,
+  },
+  orgCode: {
+    fontFamily: config.fonts.ui,
+    fontSize: "0.8125rem",
+    fontWeight: 600,
+    color: config.colors.dotStrong,
+    margin: "10px 0 0",
+    textTransform: "uppercase",
+    letterSpacing: "0.05em",
   },
   intro: {
     fontFamily: config.fonts.voice,
