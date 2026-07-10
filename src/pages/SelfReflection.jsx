@@ -170,6 +170,7 @@ export default function SelfReflection() {
             axis={currentAxis}
             selected={selections[currentAxis.id]}
             onSelect={handleSelect}
+            instruction={copy.axisInstruction}
           />
 
           <div style={styles.nav}>

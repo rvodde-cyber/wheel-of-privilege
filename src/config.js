@@ -68,6 +68,7 @@ export const config = {
       prevLabel: "Vorige",
       finishLabel: "Bekijk resultaat",
       progressLabel: "As",
+      axisInstruction: "Kies het onderdeel dat het beste bij jouw situatie past.",
       privacyNote: "Alles blijft lokaal op dit apparaat. Geen data verlaat je toestel.",
     },
     team: {
@@ -81,6 +82,8 @@ export const config = {
       prevLabel: "Vorige",
       finishLabel: "Versturen",
       progressLabel: "As",
+      axisInstruction:
+        "Kies het onderdeel dat volgens jou het beste past bij de grootste groep collega's.",
       privacyNote:
         "Alleen tellers worden opgeslagen — nooit jouw individuele antwoorden.",
       previewNote: "Live voorvertoning van jouw perceptie — niet het org-resultaat.",
@@ -112,6 +115,7 @@ export const config = {
       prevLabel: "Vorige",
       finishLabel: "Bekijk resultaat",
       progressLabel: "As",
+      axisInstruction: "Kies het onderdeel dat het beste bij jouw situatie past.",
       privacyNote: "Alles blijft lokaal op dit apparaat. Geen data verlaat je toestel.",
     },
     team: {
@@ -125,6 +129,8 @@ export const config = {
       prevLabel: "Vorige",
       finishLabel: "Versturen",
       progressLabel: "As",
+      axisInstruction:
+        "Kies het onderdeel dat volgens jou het beste past bij de grootste groep collega's.",
       privacyNote:
         "Alleen tellers worden opgeslagen — nooit jouw individuele antwoorden.",
       previewNote: "Live voorvertoning van jouw perceptie — niet het org-resultaat.",

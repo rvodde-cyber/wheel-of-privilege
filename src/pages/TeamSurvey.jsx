@@ -167,6 +167,7 @@ export default function TeamSurvey() {
             axis={currentAxis}
             selected={selections[currentAxis.id]}
             onSelect={handleSelect}
+            instruction={copy.axisInstruction}
           />
 
           {submitError && <p style={styles.errorBanner}>{submitError}</p>}

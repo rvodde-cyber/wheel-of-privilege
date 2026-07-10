@@ -2,10 +2,12 @@ import { config, POSITIONS } from "../config.js";
 
 const POSITION_ORDER = ["center", "middle", "periphery"];
 
-export default function AxisSelector({ axis, selected, onSelect }) {
+export default function AxisSelector({ axis, selected, onSelect, instruction }) {
   return (
     <div style={styles.wrap}>
       <h2 style={styles.question}>{axis.label}</h2>
+
+      {instruction && <p style={styles.instruction}>{instruction}</p>}
 
       <div style={styles.options}>
         {POSITION_ORDER.map((key) => {
@@ -41,8 +43,16 @@ const styles = {
     fontSize: "1.375rem",
     fontWeight: 600,
     color: config.colors.text,
-    margin: "0 0 20px",
+    margin: "0 0 10px",
     lineHeight: 1.35,
+  },
+  instruction: {
+    fontFamily: config.fonts.voice,
+    fontSize: "0.9375rem",
+    fontStyle: "italic",
+    color: config.colors.textMuted,
+    margin: "0 0 18px",
+    lineHeight: 1.5,
   },
   options: {
     display: "flex",
