@@ -18,11 +18,11 @@ export const AXES_SELF = [
     shortLabel: "Klasse",
     positions: {
       center:
-        "Ik groeide op in een omgeving met financiële zekerheid, eigen woning en ruimte voor onverwachte uitgaven.",
+        "Ik groeide op in een omgeving met financiële zekerheid, eigen woning en ruimte voor onverwachte uitgaven, in een wijk of regio met goede voorzieningen.",
       middle:
         "Ik groeide op met voldoende middelen, maar zonder grote financiële buffer of vermogen.",
       periphery:
-        "Ik groeide op met weinig financiële ruimte; zorgen over geld waren een vast onderdeel van het dagelijks leven.",
+        "Ik groeide op met weinig financiële ruimte; zorgen over geld waren een vast onderdeel van het dagelijks leven, vaak in een wijk of regio met minder voorzieningen.",
     },
   },
   {

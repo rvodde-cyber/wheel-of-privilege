@@ -42,7 +42,8 @@ export const AXES_TEAM = [
     shortLabel: "Klasse",
     titel: "Sociaaleconomische klasse",
     vraagdeel: "qua sociaaleconomische achtergrond",
-    hint: "Denk aan financiële ruimte en levensstijl die je om je heen ziet.",
+    hint:
+      "Denk aan financiële ruimte en levensstijl die je om je heen ziet, en aan de wijk of regio waar mensen opgroeiden.",
     opties: {
       centrum:
         "De meeste collega's komen uit een midden- of hogere klasse en hebben weinig financiële zorgen.",
