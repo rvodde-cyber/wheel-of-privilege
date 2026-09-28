@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { config, ATTRIBUTION, ORG_ATTRIBUTION, getFraming } from "../config.js";
 
 const ORG_STEPS = [
@@ -8,10 +9,25 @@ const ORG_STEPS = [
   "Beoordeel nooit individuele collega's. Baseer je op wat zichtbaar, bekend of bespreekbaar is in de organisatie.",
 ];
 
+const LENS_OPTIONS = [
+  {
+    id: "een",
+    title: "Eén lens",
+    text: "Hele organisatie",
+  },
+  {
+    id: "twee",
+    title: "Twee lenzen",
+    text: "Hele organisatie én de top (directie en management)",
+    recommended: true,
+  },
+];
+
 export default function IntroScreen({ mode = "self", orgCode, onStart }) {
   const framing = getFraming();
   const copy = mode === "self" ? framing.self : framing.team;
   const isTeam = mode === "team";
+  const [lensMode, setLensMode] = useState("twee");
 
   return (
     <div style={styles.wrap}>
@@ -41,6 +57,40 @@ export default function IntroScreen({ mode = "self", orgCode, onStart }) {
             aan het eind kun je een PDF downloaden.
           </p>
           <p style={styles.attribution}>{ORG_ATTRIBUTION}</p>
+          <p style={styles.stepsTitle}>Kies je lens</p>
+          <div role="radiogroup" aria-label="Aantal lenzen" style={styles.lensGroup}>
+            {LENS_OPTIONS.map((option) => {
+              const selected = lensMode === option.id;
+              return (
+                <button
+                  key={option.id}
+                  type="button"
+                  role="radio"
+                  aria-checked={selected}
+                  onClick={() => setLensMode(option.id)}
+                  style={{
+                    ...styles.lensCard,
+                    ...(selected ? styles.lensCardSelected : {}),
+                  }}
+                >
+                  <span
+                    aria-hidden="true"
+                    style={{
+                      ...styles.radio,
+                      ...(selected ? styles.radioSelected : {}),
+                    }}
+                  />
+                  <span style={styles.lensCopy}>
+                    <span style={styles.lensTitleRow}>
+                      <span style={styles.lensTitle}>{option.title}</span>
+                      {option.recommended && <span style={styles.badge}>aanbevolen</span>}
+                    </span>
+                    <span style={styles.lensText}>{option.text}</span>
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </>
       ) : (
         <>
@@ -52,7 +102,11 @@ export default function IntroScreen({ mode = "self", orgCode, onStart }) {
         </>
       )}
 
-      <button type="button" onClick={onStart} style={styles.button}>
+      <button
+        type="button"
+        onClick={() => (isTeam ? onStart(lensMode) : onStart())}
+        style={styles.button}
+      >
         {copy.startLabel}
       </button>
     </div>
@@ -135,6 +189,76 @@ const styles = {
     margin: "0 0 16px",
     fontWeight: 500,
     lineHeight: 1.55,
+  },
+  lensGroup: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 12,
+    margin: "0 0 20px",
+  },
+  lensCard: {
+    display: "flex",
+    alignItems: "flex-start",
+    gap: 14,
+    textAlign: "left",
+    width: "100%",
+    fontFamily: config.fonts.ui,
+    background: config.colors.surface,
+    border: `1.5px solid ${config.colors.border}`,
+    borderRadius: 14,
+    padding: "16px 16px",
+    cursor: "pointer",
+  },
+  lensCardSelected: {
+    background: config.colors.selectedBg,
+    borderColor: config.colors.selectedBorder,
+  },
+  radio: {
+    width: 18,
+    height: 18,
+    marginTop: 2,
+    borderRadius: "50%",
+    border: `2px solid ${config.colors.border}`,
+    flexShrink: 0,
+    boxSizing: "border-box",
+  },
+  radioSelected: {
+    borderColor: config.colors.dotStrong,
+    background: config.colors.dotStrong,
+    boxShadow: "inset 0 0 0 3px #FFFFFF",
+  },
+  lensCopy: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 4,
+    minWidth: 0,
+  },
+  lensTitleRow: {
+    display: "flex",
+    alignItems: "center",
+    gap: 8,
+    flexWrap: "wrap",
+  },
+  lensTitle: {
+    fontSize: "1.05rem",
+    fontWeight: 700,
+    color: config.colors.text,
+  },
+  lensText: {
+    fontFamily: config.fonts.voice,
+    fontSize: "0.975rem",
+    color: config.colors.text,
+    lineHeight: 1.45,
+  },
+  badge: {
+    fontSize: "0.6875rem",
+    fontWeight: 700,
+    letterSpacing: "0.04em",
+    textTransform: "uppercase",
+    color: config.colors.buttonText,
+    background: config.colors.buttonBg,
+    borderRadius: 999,
+    padding: "2px 8px",
   },
   button: {
     fontFamily: config.fonts.ui,

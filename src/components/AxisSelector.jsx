@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { config, POSITIONS } from "../config.js";
 import { TUSSEN, ONBEKEND, formatTeamQuestion } from "../data/axesTeam.js";
 
@@ -16,25 +17,62 @@ export default function AxisSelector({
   onSelect,
   instruction,
   mode = "self",
+  question,
+  tussenText,
+  compact = false,
+  heading,
+  accent,
+  showTitle = true,
+  showHint = true,
 }) {
   const isTeam = mode === "team";
 
+  useEffect(() => {
+    const id = "wop-axis-compact";
+    if (document.getElementById(id)) return;
+    const el = document.createElement("style");
+    el.id = id;
+    el.textContent = `
+      .wop-axis-options-compact { display: flex; flex-direction: column; }
+      @media (min-width: 560px) {
+        .wop-axis-options-compact { display: grid; grid-template-columns: 1fr 1fr; }
+      }
+    `;
+    document.head.appendChild(el);
+  }, []);
+
+  const teamOptions = TEAM_OPTIONS.map((opt) =>
+    opt.key === "middle" ? { ...opt, text: tussenText || TUSSEN } : opt
+  );
+  const vraagTekst = question || (isTeam ? formatTeamQuestion(axis) : "");
+
   return (
-    <div style={styles.wrap}>
-      <h2 style={styles.question}>{isTeam ? axis.titel : axis.label}</h2>
+    <div style={{ ...styles.wrap, ...(compact ? styles.wrapCompact : {}) }}>
+      {showTitle && (
+        <h2 style={{ ...styles.question, ...(compact ? styles.questionCompact : {}) }}>
+          {isTeam ? axis.titel : axis.label}
+        </h2>
+      )}
+
+      {heading && (
+        <p style={{ ...styles.heading, color: accent || config.colors.dotStrong }}>{heading}</p>
+      )}
 
       {isTeam && (
         <>
-          <p style={styles.vraag}>{formatTeamQuestion(axis)}</p>
-          {axis.hint && <p style={styles.hint}>{axis.hint}</p>}
+          <p style={{ ...styles.vraag, ...(compact ? styles.vraagCompact : {}) }}>{vraagTekst}</p>
+          {showHint && axis.hint && <p style={styles.hint}>{axis.hint}</p>}
         </>
       )}
 
       {!isTeam && instruction && <p style={styles.instruction}>{instruction}</p>}
 
-      <div style={styles.options}>
+      <div
+        className={compact ? "wop-axis-options-compact" : undefined}
+        style={compact ? { gap: 8 } : styles.options}
+      >
         {isTeam
-          ? TEAM_OPTIONS.map((opt) => {
+          ? teamOptions.map((opt) => {
               const isSelected = selected === opt.key;
               const bodyText =
                 opt.text ??
@@ -46,6 +84,7 @@ export default function AxisSelector({
                   onClick={() => onSelect(opt.key)}
                   style={{
                     ...styles.option,
+                    ...(compact ? styles.optionCompact : {}),
                     ...(opt.muted ? styles.optionMuted : {}),
                     ...(isSelected ? styles.optionSelected : {}),
                   }}
@@ -90,6 +129,19 @@ const styles = {
     margin: "0 auto",
     padding: "0 20px",
   },
+  wrapCompact: {
+    maxWidth: "none",
+    margin: "0 0 8px",
+    padding: "0 12px",
+  },
+  heading: {
+    fontFamily: config.fonts.ui,
+    fontSize: "0.8125rem",
+    fontWeight: 700,
+    letterSpacing: "0.04em",
+    textTransform: "uppercase",
+    margin: "0 0 6px",
+  },
   question: {
     fontFamily: config.fonts.voice,
     fontSize: "1.375rem",
@@ -98,6 +150,9 @@ const styles = {
     margin: "0 0 10px",
     lineHeight: 1.35,
   },
+  questionCompact: {
+    fontSize: "1.125rem",
+  },
   vraag: {
     fontFamily: config.fonts.voice,
     fontSize: "1rem",
@@ -105,6 +160,10 @@ const styles = {
     color: config.colors.text,
     margin: "0 0 8px",
     lineHeight: 1.45,
+  },
+  vraagCompact: {
+    fontSize: "0.9375rem",
+    margin: "0 0 10px",
   },
   hint: {
     fontFamily: config.fonts.voice,
@@ -136,6 +195,9 @@ const styles = {
     padding: "14px 16px",
     cursor: "pointer",
     transition: "border-color 0.15s, background 0.15s",
+  },
+  optionCompact: {
+    padding: "10px 12px",
   },
   optionMuted: {
     background: "#F8FAF9",

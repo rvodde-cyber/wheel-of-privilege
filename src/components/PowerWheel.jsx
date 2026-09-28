@@ -35,6 +35,10 @@ function pointAt(index, radius) {
   };
 }
 
+function diamondPoints(x, y, r) {
+  return `${x},${y - r} ${x + r},${y} ${x},${y + r} ${x - r},${y}`;
+}
+
 function positionToRing(position) {
   if (position == null || position === "unknown") return null;
   return POSITION_RING[position] ?? null;
@@ -58,8 +62,21 @@ export default function PowerWheel({
   highlightAxisIndex = null,
   ariaLabel = "Machtskruising",
   projection = false,
+  layers = null,
 }) {
   const resolvedMaxWidth = maxWidth ?? SIZE_PRESETS[size]?.maxWidth ?? SIZE_PRESETS.default.maxWidth;
+  const layered = Array.isArray(layers) && layers.length > 0;
+
+  function selectionOnAxis(axisId) {
+    if (layered) {
+      for (const layer of layers) {
+        const sel = layer.selections?.[axisId];
+        if (sel != null && sel !== "") return sel;
+      }
+      return undefined;
+    }
+    return selections[axisId];
+  }
 
   const profilePoints = useMemo(() => {
     const pts = getWheelPoints(selections, axes).filter(Boolean);
@@ -84,7 +101,7 @@ export default function PowerWheel({
     { r: RING_RADII[0], fill: projection ? "rgba(29, 158, 117, 0.2)" : "rgba(29, 158, 117, 0.12)" },
   ];
 
-  return (
+  const svg = (
     <svg
       viewBox={`${VIEWBOX_MIN} ${VIEWBOX_MIN} ${VIEWBOX_SIZE} ${VIEWBOX_SIZE}`}
       overflow="visible"
@@ -137,7 +154,7 @@ export default function PowerWheel({
 
       {Array.from({ length: AXIS_COUNT }).map((_, i) => {
         const axisId = axes[i]?.id;
-        const sel = axisId != null ? selections[axisId] : undefined;
+        const sel = axisId != null ? selectionOnAxis(axisId) : undefined;
         const isAnswered = sel != null && sel !== "";
         const isActive = highlightAxisIndex === i;
 
@@ -160,7 +177,25 @@ export default function PowerWheel({
         );
       })}
 
-      {isDots && profilePoints && (
+      {layered &&
+        layers.map((layer) => {
+          const pts = getWheelPoints(layer.selections || {}, axes).filter(Boolean);
+          if (pts.length < 2) return null;
+          return (
+            <polygon
+              key={`layer-${layer.id}`}
+              points={pts.map((p) => `${p.x},${p.y}`).join(" ")}
+              fill={layer.fill}
+              fillOpacity={layer.fillOpacity}
+              stroke={layer.stroke}
+              strokeWidth={2.25}
+              strokeDasharray={layer.dash || undefined}
+              strokeLinejoin="round"
+            />
+          );
+        })}
+
+      {!layered && isDots && profilePoints && (
         <polygon
           points={profilePoints}
           fill="rgba(29, 158, 117, 0.07)"
@@ -170,7 +205,7 @@ export default function PowerWheel({
         />
       )}
 
-      {isFilled && filledPoints && (
+      {!layered && isFilled && filledPoints && (
         <polygon
           points={filledPoints}
           fill={config.colors.projectionFill}
@@ -181,7 +216,40 @@ export default function PowerWheel({
         />
       )}
 
-      {axes.map((axis, i) => {
+      {layered &&
+        layers.map((layer) =>
+          axes.map((axis, i) => {
+            const ring = positionToRing(layer.selections?.[axis.id]);
+            if (ring == null) return null;
+            const pt = pointAt(i, RING_RADII[ring]);
+            const isDiamond = Boolean(layer.dash);
+            const isActive = highlightAxisIndex === i;
+            if (isDiamond) {
+              return (
+                <polygon
+                  key={`dot-${layer.id}-${axis.id}`}
+                  points={diamondPoints(pt.x, pt.y, isActive ? 8 : 7)}
+                  fill={layer.stroke}
+                  stroke="#FFFFFF"
+                  strokeWidth={2}
+                />
+              );
+            }
+            return (
+              <circle
+                key={`dot-${layer.id}-${axis.id}`}
+                cx={pt.x}
+                cy={pt.y}
+                r={isActive ? 7 : 6}
+                fill={layer.stroke}
+                stroke="#FFFFFF"
+                strokeWidth={2}
+              />
+            );
+          })
+        )}
+
+      {!layered && axes.map((axis, i) => {
         const selection = selections[axis.id];
         if (selection == null || selection === "") return null;
 
@@ -246,7 +314,7 @@ export default function PowerWheel({
         const sin = Math.sin(axisAngle(i));
         const anchor = cos > 0.2 ? "start" : cos < -0.2 ? "end" : "middle";
         const isActive = highlightAxisIndex === i;
-        const isAnswered = selections[axis.id] != null;
+        const isAnswered = selectionOnAxis(axis.id) != null;
         const labelOffset = 4;
         const lx = pt.x + (anchor === "start" ? labelOffset : anchor === "end" ? -labelOffset : 0);
         const ly = pt.y + (sin < -0.85 ? -4 : sin > 0.85 ? 4 : 0);
@@ -312,6 +380,51 @@ export default function PowerWheel({
         </>
       )}
     </svg>
+  );
+
+  if (!layered || layers.length < 2) return svg;
+
+  return (
+    <div style={{ width: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
+      {svg}
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          gap: 16,
+          marginTop: 8,
+          padding: "0 12px 4px",
+        }}
+      >
+        {layers.map((layer) => (
+          <span
+            key={`legend-${layer.id}`}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+              fontFamily: config.fonts.ui,
+              fontSize: "0.8125rem",
+              color: config.colors.text,
+            }}
+          >
+            <span
+              aria-hidden="true"
+              style={{
+                width: 14,
+                height: 14,
+                borderRadius: 3,
+                background: layer.fill,
+                border: `2px ${layer.dash ? "dashed" : "solid"} ${layer.stroke}`,
+                boxSizing: "border-box",
+              }}
+            />
+            {layer.label}
+          </span>
+        ))}
+      </div>
+    </div>
   );
 }
 

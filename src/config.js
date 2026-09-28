@@ -50,6 +50,9 @@ export const config = {
     buttonHover: "#178A66",
     selectedBg: "#E8F7F1",
     selectedBorder: "#1D9E75",
+
+    lensOrg: "#1D9E75",
+    lensTop: "#5B2D8E",
   },
 
   onderwijs: {

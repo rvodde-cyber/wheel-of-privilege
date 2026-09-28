@@ -3,7 +3,14 @@ import { useParams } from "react-router-dom";
 import IntroScreen from "../components/IntroScreen.jsx";
 import AxisSelector from "../components/AxisSelector.jsx";
 import PowerWheel from "../components/PowerWheel.jsx";
-import { AXES_TEAM } from "../data/axesTeam.js";
+import {
+  AXES_TEAM,
+  LENZEN,
+  TUSSEN_EEN_LENS,
+  TUSSEN_TWEE_LENZEN,
+  formatTeamQuestion,
+  formatTopQuestion,
+} from "../data/axesTeam.js";
 import { computeOrgConclusion, INSUFFICIENT_MESSAGE } from "../data/conclusie.js";
 import { printOrganisatiePdf } from "../utils/orgPrint.js";
 import { config, getFraming } from "../config.js";
@@ -14,6 +21,31 @@ function isValidOrgCode(code) {
   return typeof code === "string" && ORG_CODE_PATTERN.test(code.trim());
 }
 
+function lensLayers(selections) {
+  return [
+    {
+      id: LENZEN.organisatie.id,
+      selections: selections.organisatie,
+      fill: config.colors.lensOrg,
+      fillOpacity: 0.35,
+      stroke: config.colors.lensOrg,
+      dash: null,
+      label: LENZEN.organisatie.label,
+    },
+    {
+      id: LENZEN.top.id,
+      selections: selections.top,
+      fill: config.colors.lensTop,
+      fillOpacity: 0.28,
+      stroke: config.colors.lensTop,
+      dash: "6 4",
+      label: LENZEN.top.label,
+    },
+  ];
+}
+
+const EMPTY_SELECTIONS = { organisatie: {}, top: {} };
+
 export default function TeamSurvey() {
   const { orgCode: rawOrgCode } = useParams();
   const orgCode = rawOrgCode?.trim().toLowerCase() ?? "";
@@ -22,11 +54,14 @@ export default function TeamSurvey() {
 
   const [step, setStep] = useState("intro");
   const [axisIndex, setAxisIndex] = useState(0);
-  const [selections, setSelections] = useState({});
+  const [lensMode, setLensMode] = useState("twee");
+  const [selections, setSelections] = useState(EMPTY_SELECTIONS);
   const wheelRef = useRef(null);
+  const tweeLenzen = lensMode === "twee";
 
   const conclusion = useMemo(
-    () => (step === "result" ? computeOrgConclusion(selections, AXES_TEAM) : null),
+    () =>
+      step === "result" ? computeOrgConclusion(selections.organisatie, AXES_TEAM) : null,
     [step, selections]
   );
 
@@ -79,12 +114,16 @@ export default function TeamSurvey() {
 
   const currentAxis = AXES_TEAM[axisIndex];
   const isLastAxis = axisIndex === AXES_TEAM.length - 1;
-  const canProceed = Boolean(selections[currentAxis.id]);
+  const activeLenses = tweeLenzen ? ["organisatie", "top"] : ["organisatie"];
+  const canProceed = activeLenses.every((lens) => Boolean(selections[lens]?.[currentAxis.id]));
 
-  function handleSelect(position) {
+  function handleSelect(lens, position) {
     setSelections((prev) => ({
       ...prev,
-      [currentAxis.id]: position,
+      [lens]: {
+        ...prev[lens],
+        [currentAxis.id]: position,
+      },
     }));
   }
 
@@ -106,13 +145,23 @@ export default function TeamSurvey() {
   function restart() {
     setStep("intro");
     setAxisIndex(0);
-    setSelections({});
+    setLensMode("twee");
+    setSelections({ organisatie: {}, top: {} });
   }
 
   if (step === "intro") {
     return (
       <div style={styles.page}>
-        <IntroScreen mode="team" orgCode={orgCode} onStart={() => setStep("survey")} />
+        <IntroScreen
+          mode="team"
+          orgCode={orgCode}
+          onStart={(mode) => {
+            setLensMode(mode === "een" ? "een" : "twee");
+            setSelections({ organisatie: {}, top: {} });
+            setAxisIndex(0);
+            setStep("survey");
+          }}
+        />
       </div>
     );
   }
@@ -133,7 +182,8 @@ export default function TeamSurvey() {
             <PowerWheel
               variant="filled"
               size="large"
-              selections={selections}
+              selections={selections.organisatie}
+              layers={tweeLenzen ? lensLayers(selections) : undefined}
               axes={AXES_TEAM}
               ariaLabel="Organisatie-indruk op het machtskruising"
             />
@@ -142,7 +192,7 @@ export default function TeamSurvey() {
           <div style={styles.actions}>
             <button
               type="button"
-              onClick={() => printOrganisatiePdf(selections, AXES_TEAM, orgCode)}
+              onClick={() => printOrganisatiePdf(selections.organisatie, AXES_TEAM, orgCode)}
               style={styles.primaryBtn}
             >
               {copy.downloadPdfLabel}
@@ -163,7 +213,8 @@ export default function TeamSurvey() {
           <PowerWheel
             variant="filled"
             size="large"
-            selections={selections}
+            selections={selections.organisatie}
+            layers={tweeLenzen ? lensLayers(selections) : undefined}
             axes={AXES_TEAM}
             highlightAxisIndex={axisIndex}
             ariaLabel="Voorvertoning organisatie-indruk"
@@ -177,12 +228,46 @@ export default function TeamSurvey() {
             {copy.progressLabel} {axisIndex + 1} / {AXES_TEAM.length}
           </p>
 
-          <AxisSelector
-            mode="team"
-            axis={currentAxis}
-            selected={selections[currentAxis.id]}
-            onSelect={handleSelect}
-          />
+          {tweeLenzen ? (
+            <div>
+              <h2 style={styles.axisTitle}>{currentAxis.titel}</h2>
+              {currentAxis.hint && <p style={styles.axisHint}>{currentAxis.hint}</p>}
+              <AxisSelector
+                mode="team"
+                compact
+                heading={LENZEN.organisatie.label}
+                accent={config.colors.lensOrg}
+                axis={currentAxis}
+                question={formatTeamQuestion(currentAxis)}
+                tussenText={TUSSEN_TWEE_LENZEN}
+                showTitle={false}
+                showHint={false}
+                selected={selections.organisatie[currentAxis.id]}
+                onSelect={(position) => handleSelect("organisatie", position)}
+              />
+              <AxisSelector
+                mode="team"
+                compact
+                heading={LENZEN.top.label}
+                accent={config.colors.lensTop}
+                axis={currentAxis}
+                question={formatTopQuestion(currentAxis)}
+                tussenText={TUSSEN_TWEE_LENZEN}
+                showTitle={false}
+                showHint={false}
+                selected={selections.top[currentAxis.id]}
+                onSelect={(position) => handleSelect("top", position)}
+              />
+            </div>
+          ) : (
+            <AxisSelector
+              mode="team"
+              axis={currentAxis}
+              tussenText={TUSSEN_EEN_LENS}
+              selected={selections.organisatie[currentAxis.id]}
+              onSelect={(position) => handleSelect("organisatie", position)}
+            />
+          )}
 
           <div style={styles.nav}>
             {axisIndex > 0 && (
@@ -242,6 +327,24 @@ const styles = {
     letterSpacing: "0.06em",
     margin: "8px 0 12px",
     padding: "12px 20px 0",
+  },
+  axisTitle: {
+    fontFamily: config.fonts.voice,
+    fontSize: "1.375rem",
+    fontWeight: 600,
+    color: config.colors.text,
+    margin: "0 0 8px",
+    padding: "0 12px",
+    lineHeight: 1.35,
+  },
+  axisHint: {
+    fontFamily: config.fonts.voice,
+    fontSize: "0.9375rem",
+    fontStyle: "italic",
+    color: config.colors.textMuted,
+    margin: "0 0 16px",
+    padding: "0 12px",
+    lineHeight: 1.5,
   },
   previewNote: {
     fontFamily: config.fonts.ui,

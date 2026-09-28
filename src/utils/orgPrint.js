@@ -4,7 +4,9 @@ import {
   selectionToScore,
   INSUFFICIENT_MESSAGE,
 } from "../data/conclusie.js";
-import { BRONNEN } from "../data/adviesTeksten.js";
+import { BRONNEN_APA } from "../data/adviesTeksten.js";
+
+const BRONNEN = BRONNEN_APA.join(" ");
 
 const POSITION_LABEL = {
   center: "Machtscentrum",

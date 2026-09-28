@@ -3,6 +3,19 @@ export const TUSSEN =
 
 export const ONBEKEND = "Dat kan ik niet inschatten.";
 
+export const LENZEN = {
+  organisatie: { id: "organisatie", label: "Hele organisatie" },
+  top: { id: "top", label: "De top" },
+};
+
+export const TUSSEN_EEN_LENS = TUSSEN;
+export const TUSSEN_TWEE_LENZEN = "Gemengd beeld zonder duidelijke meerderheid.";
+
+/** @param {{ vraagdeel: string }} axis */
+export function formatTopQuestion(axis) {
+  return `Waar zit volgens jou de grootste groep collega's in de top (directie en management) ${axis.vraagdeel}?`;
+}
+
 /** @param {{ vraagdeel: string }} axis */
 export function formatTeamQuestion(axis) {
   return `Waar zit volgens jou de grootste groep collega's ${axis.vraagdeel}?`;
