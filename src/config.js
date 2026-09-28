@@ -76,18 +76,23 @@ export const config = {
     },
     team: {
       subtitle: "",
-      intro: "",
+      intro:
+        "Geef per onderwerp aan waar volgens jou de grootste groep collega's zit. " +
+        "Je geeft geen eigen positie aan, alleen je indruk van de organisatie. " +
+        "Alles blijft op dit apparaat; er wordt niets verstuurd of opgeslagen.",
       startLabel: "Begin organisatiescan",
       nextLabel: "Volgende",
       prevLabel: "Vorige",
       finishLabel: "Bekijk resultaat",
       progressLabel: "Onderwerp",
       axisInstruction: "",
-      privacyNote: "",
+      privacyNote:
+        "Je antwoorden blijven op dit apparaat. Er wordt niets verstuurd of opgeslagen.",
       previewNote: "Live voorvertoning van jouw indruk.",
-      resultTitle: "Resultaat organisatiescan",
-      downloadPdfLabel: "Download PDF",
+      resultTitle: "Jouw beeld van de organisatie",
+      downloadPdfLabel: "Download als PDF",
       restartLabel: "Opnieuw beginnen",
+      backToStartLabel: "Terug naar start",
     },
   },
 
@@ -115,18 +120,23 @@ export const config = {
     },
     team: {
       subtitle: "",
-      intro: "",
+      intro:
+        "Geef per onderwerp aan waar volgens jou de grootste groep collega's zit. " +
+        "Je geeft geen eigen positie aan, alleen je indruk van de organisatie. " +
+        "Alles blijft op dit apparaat; er wordt niets verstuurd of opgeslagen.",
       startLabel: "Begin organisatiescan",
       nextLabel: "Volgende",
       prevLabel: "Vorige",
       finishLabel: "Bekijk resultaat",
       progressLabel: "Onderwerp",
       axisInstruction: "",
-      privacyNote: "",
+      privacyNote:
+        "Je antwoorden blijven op dit apparaat. Er wordt niets verstuurd of opgeslagen.",
       previewNote: "Live voorvertoning van jouw indruk.",
-      resultTitle: "Resultaat organisatiescan",
-      downloadPdfLabel: "Download PDF",
+      resultTitle: "Jouw beeld van de organisatie",
+      downloadPdfLabel: "Download als PDF",
       restartLabel: "Opnieuw beginnen",
+      backToStartLabel: "Terug naar start",
     },
   },
 
