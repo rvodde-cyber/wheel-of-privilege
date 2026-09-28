@@ -1,87 +1,68 @@
-import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { config, ATTRIBUTION, getFraming } from "../config.js";
+import { Link } from "react-router-dom";
+import PowerWheel from "../components/PowerWheel.jsx";
+import SiteNav, { StartActions } from "../components/SiteNav.jsx";
+import { AXES_SELF } from "../data/axesSelf.js";
+import { config } from "../config.js";
 
-const ORG_CODE_PATTERN = /^[a-z0-9][a-z0-9_-]{0,31}$/i;
+const VOORBEELD_SELECTIES = {
+  opleiding: "center",
+  klasse: "center",
+  ouders: "middle",
+  etniciteit: "center",
+  gender: "middle",
+  seksualiteit: "center",
+  religie: "middle",
+  taal: "center",
+  gezondheid: "periphery",
+  neurodiversiteit: "middle",
+  migratie: "center",
+};
+
+const KENMERKEN = ["Geen account", "Niets verlaat je apparaat", "Eindigt in een PDF-verslag"];
 
 export default function Landing() {
-  const framing = getFraming();
-  const copy = config.landing;
-  const [orgCode, setOrgCode] = useState("");
-  const [orgError, setOrgError] = useState("");
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const id = "wop-landing-layout";
-    if (document.getElementById(id)) return;
-    const el = document.createElement("style");
-    el.id = id;
-    el.textContent = `
-      @media (min-width: 640px) {
-        .wop-landing-cards { flex-direction: row; align-items: stretch; }
-        .wop-landing-cards > section { flex: 1; }
-      }
-    `;
-    document.head.appendChild(el);
-  }, []);
-
-  function startTeam() {
-    const code = orgCode.trim().toLowerCase();
-    if (!ORG_CODE_PATTERN.test(code)) {
-      setOrgError(copy.orgCodeError);
-      return;
-    }
-    setOrgError("");
-    navigate(`/team/${code}`);
-  }
-
   return (
     <div style={styles.page}>
-      <div style={styles.wrap}>
-        <header style={styles.header}>
-          <h1 style={styles.title}>{framing.title}</h1>
-          <p style={styles.intro}>{copy.intro}</p>
-        </header>
-
-        <div className="wop-landing-cards" style={styles.cards}>
-          <section style={styles.card}>
-            <h2 style={styles.cardTitle}>{copy.individualTitle}</h2>
-            <p style={styles.cardText}>{copy.individualDescription}</p>
-            <Link to="/individu" style={styles.primaryLink}>
-              {copy.individualCta}
+      <SiteNav />
+      <main style={styles.main}>
+        <div className="wop-landing-grid">
+          <div className="wop-landing-copy">
+            <p style={styles.eyebrow}>Zelfreflectie · Organisatiescan</p>
+            <h1 style={styles.title}>
+              Wie staat er <em style={styles.accent}>dicht bij</em> de macht?
+            </h1>
+            <p style={styles.lead}>
+              Bij jezelf of in je organisatie: maak zichtbaar wie vanzelf voordeel heeft. Als
+              vertrekpunt, niet als oordeel.
+            </p>
+            <StartActions />
+            <Link to="/uitleg" style={styles.textLink}>
+              Hoe het werkt
             </Link>
-          </section>
+            <ul style={styles.features}>
+              {KENMERKEN.map((item) => (
+                <li key={item} style={styles.feature}>
+                  <span style={styles.dot} aria-hidden="true" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
 
-          <section style={styles.card}>
-            <h2 style={styles.cardTitle}>{copy.teamTitle}</h2>
-            <p style={styles.cardText}>{copy.teamDescription}</p>
-            <label style={styles.label} htmlFor="org-code">
-              {copy.orgCodeLabel}
-            </label>
-            <input
-              id="org-code"
-              type="text"
-              value={orgCode}
-              onChange={(e) => {
-                setOrgCode(e.target.value);
-                setOrgError("");
-              }}
-              placeholder={copy.orgCodePlaceholder}
-              style={{
-                ...styles.input,
-                borderColor: orgError ? "#FECACA" : config.colors.border,
-              }}
-              onKeyDown={(e) => e.key === "Enter" && startTeam()}
-            />
-            {orgError && <p style={styles.error}>{orgError}</p>}
-            <button type="button" onClick={startTeam} style={styles.primaryBtn}>
-              {copy.teamCta}
-            </button>
-          </section>
+          <div className="wop-landing-visual">
+            <div style={styles.card}>
+              <PowerWheel
+                variant="dots"
+                size="large"
+                selections={VOORBEELD_SELECTIES}
+                axes={AXES_SELF}
+                ariaLabel="Voorbeeldprofiel op het machtskruising"
+              />
+              <p style={styles.caption}>Voorbeeldprofiel</p>
+            </div>
+          </div>
         </div>
-
-        <p style={styles.attribution}>{ATTRIBUTION}</p>
-      </div>
+      </main>
     </div>
   );
 }
@@ -89,118 +70,88 @@ export default function Landing() {
 const styles = {
   page: {
     minHeight: "100vh",
-    background: config.colors.surface2,
+    background: config.colors.pageBg,
     color: config.colors.text,
   },
-  wrap: {
-    maxWidth: 720,
+  main: {
+    maxWidth: 1120,
     margin: "0 auto",
-    padding: "40px 20px 56px",
+    padding: "12px 24px 72px",
   },
-  header: {
-    marginBottom: 36,
-    textAlign: "center",
+  eyebrow: {
+    fontFamily: config.fonts.ui,
+    fontSize: "0.75rem",
+    fontWeight: 700,
+    letterSpacing: "0.12em",
+    textTransform: "uppercase",
+    color: config.colors.dotStrong,
+    margin: "18px 0 14px",
   },
   title: {
     fontFamily: config.fonts.voice,
-    fontSize: "clamp(1.75rem, 5vw, 2.5rem)",
+    fontSize: "clamp(2.4rem, 5vw, 3.75rem)",
     fontWeight: 600,
-    margin: "0 0 12px",
-    lineHeight: 1.2,
+    lineHeight: 1.08,
+    letterSpacing: "-0.02em",
+    margin: "0 0 16px",
   },
-  intro: {
-    fontFamily: config.fonts.voice,
-    fontSize: "1.0625rem",
+  accent: {
+    fontStyle: "italic",
+    fontWeight: 500,
+    color: config.colors.dotStrong,
+  },
+  lead: {
+    fontFamily: config.fonts.ui,
+    fontSize: "1.125rem",
+    lineHeight: 1.5,
     color: config.colors.textMuted,
-    lineHeight: 1.6,
-    margin: 0,
+    margin: "0 0 8px",
+    maxWidth: 520,
   },
-  cards: {
+  features: {
+    listStyle: "none",
+    padding: 0,
+    margin: "18px 0 0",
     display: "flex",
     flexDirection: "column",
-    gap: 20,
+    gap: 8,
+  },
+  feature: {
+    display: "flex",
+    alignItems: "center",
+    gap: 10,
+    fontFamily: config.fonts.ui,
+    fontSize: "0.9375rem",
+    color: config.colors.text,
+  },
+  dot: {
+    width: 7,
+    height: 7,
+    borderRadius: "50%",
+    background: config.colors.dotStrong,
+    flexShrink: 0,
+  },
+  textLink: {
+    fontFamily: config.fonts.ui,
+    fontSize: "0.975rem",
+    fontWeight: 600,
+    color: config.colors.dotStrong,
+    textDecoration: "underline",
+    textUnderlineOffset: 3,
   },
   card: {
     background: config.colors.surface,
-    border: `1.5px solid ${config.colors.border}`,
-    borderRadius: 14,
-    padding: "24px 22px",
-  },
-  cardTitle: {
-    fontFamily: config.fonts.voice,
-    fontSize: "1.25rem",
-    fontWeight: 600,
-    margin: "0 0 10px",
-  },
-  cardText: {
-    fontFamily: config.fonts.voice,
-    fontSize: "0.9375rem",
-    color: config.colors.textMuted,
-    lineHeight: 1.6,
-    margin: "0 0 20px",
-  },
-  label: {
-    display: "block",
-    fontFamily: config.fonts.ui,
-    fontSize: "0.75rem",
-    fontWeight: 600,
-    textTransform: "uppercase",
-    letterSpacing: "0.05em",
-    color: config.colors.textMuted,
-    marginBottom: 8,
-  },
-  input: {
-    width: "100%",
-    fontFamily: config.fonts.ui,
-    fontSize: "1rem",
-    padding: "12px 14px",
-    border: `1.5px solid ${config.colors.border}`,
-    borderRadius: 8,
-    marginBottom: 12,
-    outline: "none",
-    boxSizing: "border-box",
-  },
-  error: {
-    fontFamily: config.fonts.ui,
-    fontSize: "0.8125rem",
-    color: "#9B2C2C",
-    margin: "0 0 12px",
-  },
-  primaryBtn: {
-    fontFamily: config.fonts.ui,
-    fontSize: "0.9375rem",
-    fontWeight: 600,
-    color: config.colors.buttonText,
-    background: config.colors.buttonBg,
-    border: "none",
-    borderRadius: 8,
-    padding: "12px 24px",
-    cursor: "pointer",
-    width: "100%",
-    maxWidth: 280,
-  },
-  primaryLink: {
-    display: "inline-block",
-    fontFamily: config.fonts.ui,
-    fontSize: "0.9375rem",
-    fontWeight: 600,
-    color: config.colors.buttonText,
-    background: config.colors.buttonBg,
-    borderRadius: 8,
-    padding: "12px 24px",
-    textDecoration: "none",
-    textAlign: "center",
-    maxWidth: 280,
-  },
-  attribution: {
-    fontFamily: config.fonts.ui,
-    fontSize: "0.8125rem",
-    color: config.colors.textMuted,
-    lineHeight: 1.55,
-    margin: "32px 0 0",
-    padding: "12px 14px",
-    background: "#F4FAF7",
-    borderRadius: 8,
     border: `1px solid ${config.colors.border}`,
+    borderRadius: 28,
+    padding: "20px 12px 16px",
+    boxShadow: "0 16px 40px rgba(26, 36, 34, 0.06)",
+  },
+  caption: {
+    fontFamily: config.fonts.voice,
+    fontStyle: "italic",
+    fontSize: "0.95rem",
+    color: config.colors.textMuted,
+    textAlign: "center",
+    margin: "4px 0 8px",
   },
 };

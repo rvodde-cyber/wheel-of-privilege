@@ -149,7 +149,7 @@ iframe.onload = () => { iframe.contentWindow.focus(); iframe.contentWindow.print
 ## 5. Landingspagina en uitlegpagina
 Referentieontwerp: Claude-artifact "Machtskruising" (twee pagina's: start + uitleg). Overnemen in de app:
 - `src/pages/Landing.jsx` herschrijven. Tweekolom (≥ 880px), één kolom op mobiel:
-  - Links: eyebrow "ZELFREFLECTIE · ORGANISATIESCAN"; h1 (serif, groot) "Waar sta jij ten opzichte van de macht?" met "ten opzichte van" cursief in accentkleur; één zin: "Maak zichtbaar welk voordeel je meekreeg. Als vertrekpunt, niet als oordeel."; knoppen "Start de reflectie →" (`/individu`, primair) en "Organisatiescan" (`/team/demo`, secundair); drie kleine kenmerken met stip: "Geen account", "Niets verlaat je apparaat", "Eindigt in een PDF-verslag"; tekstlink "Hoe het werkt" naar `/uitleg`.
+  - Links: eyebrow "ZELFREFLECTIE · ORGANISATIESCAN"; h1 (serif, groot) "Wie staat er dicht bij de macht?" met "dicht bij" cursief in accentkleur (vastgesteld door Richard, 28-9-2026); onderregel: "Bij jezelf of in je organisatie: maak zichtbaar wie vanzelf voordeel heeft. Als vertrekpunt, niet als oordeel."; twee gelijkwaardige primaire knoppen naast elkaar: "Reflecteer op jezelf →" (`/individu`) en "Scan je organisatie →" (`/team/demo`), onder 560px onder elkaar op volle breedte; daaronder tekstknop "Hoe het werkt" naar `/uitleg`; drie kleine kenmerken met stip: "Geen account", "Niets verlaat je apparaat", "Eindigt in een PDF-verslag".
   - Rechts: witte kaart (radius 28, rand `config.colors.border`) met `PowerWheel variant="dots" size="large"` en een vast voorbeeldprofiel (constante `VOORBEELD_SELECTIES` met 11 assen, gemengde posities), onderschrift cursief "Voorbeeldprofiel".
 - Nieuwe route `/uitleg` → `src/pages/Uitleg.jsx`, secties met label links (≥ 880px) en inhoud rechts, gescheiden door dunne lijnen:
   1. Intro: h2 "Een spiegel voor privilege, op elf assen tegelijk" + korte alinea met Crenshaw (1989) en McIntosh (1989).
@@ -161,7 +161,7 @@ Referentieontwerp: Claude-artifact "Machtskruising" (twee pagina's: start + uitl
   7. Privacy.
   8. Wat het niet is.
   9. Bronnen (APA, `BRONNEN_APA`).
-  10. Onderaan dezelfde twee knoppen als op de landingspagina.
+  10. Onderaan dezelfde twee knoppen als op de landingspagina ("Reflecteer op jezelf →" en "Scan je organisatie →").
 - Kleine navigatiebalk bovenaan op `/` en `/uitleg`: logo (drie concentrische cirkels, accentkleur) + "Machtskruising", rechts segmentknop "Start | Uitleg".
 - Gebruik uitsluitend `config.fonts` (Source Serif 4 / Source Sans 3) en `config.colors`; achtergrond pagina licht teal `#F3F8F6` (toevoegen als `config.colors.pageBg`).
 - `index.html`: `<title>Machtskruising</title>`, `lang="nl"`, meta description.

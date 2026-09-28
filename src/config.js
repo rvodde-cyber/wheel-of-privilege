@@ -32,6 +32,7 @@ export const config = {
   colors: {
     surface: "#FFFFFF",
     surface2: "#FFFFFF",
+    pageBg: "#F3F8F6",
     text: "#1A2422",
     textMuted: "#5A6B66",
     border: "#D8E8E2",
