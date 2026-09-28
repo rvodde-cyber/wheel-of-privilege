@@ -294,7 +294,14 @@ export default function TeamSurvey() {
           <div style={styles.actions}>
             <button
               type="button"
-              onClick={() => printOrganisatiePdf(selections.organisatie, AXES_TEAM, orgCode)}
+              onClick={() =>
+                printOrganisatiePdf({
+                  selections,
+                  axes: AXES_TEAM,
+                  orgCode,
+                  lensMode,
+                })
+              }
               style={styles.primaryBtn}
             >
               {copy.downloadPdfLabel}
