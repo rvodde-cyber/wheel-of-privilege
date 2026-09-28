@@ -1,4 +1,5 @@
 import PowerWheel from "../components/PowerWheel.jsx";
+import AchtergrondDocumentLink from "../components/AchtergrondDocumentLink.jsx";
 import SiteNav, { StartActions } from "../components/SiteNav.jsx";
 import { AXES_SELF } from "../data/axesSelf.js";
 import { AXES_TEAM, LENZEN, formatTeamQuestion } from "../data/axesTeam.js";
@@ -219,6 +220,7 @@ export default function Uitleg() {
         </Row>
 
         <Row label="Bronnen">
+          <AchtergrondDocumentLink />
           <ul style={styles.sources}>
             {BRONNEN_APA.map((bron) => (
               <li key={bron} style={styles.source}>
