@@ -1,0 +1,16 @@
+---
+description: Vastgestelde vormgeving Machtskruising — niet wijzigen
+alwaysApply: true
+---
+# Vormgeving is vastgesteld (Richard, 28-9-2026): NIET WIJZIGEN
+
+Verander niets aan de vormgeving tenzij Richard daar letterlijk om vraagt. Dit geldt ook bij refactors, nieuwe features en "kleine verbeteringen".
+
+Vast:
+- Lettertypen: `config.fonts.voice` = "Source Serif 4" (titels, reflectievragen, citaten), `config.fonts.ui` = "Source Sans 3" (interface). Geen andere fonts toevoegen.
+- Kleuren: uitsluitend `config.colors` (teal-ramp met accent #1D9E75, pagina-achtergrond #F3F8F6, lens top #5B2D8E). Geen nieuwe kleuren, geen gradients, geen donkere modus toevoegen.
+- Landingspagina (`Landing.jsx`, `SiteNav.jsx`): tweekolom-hero, kopvraag "Wie staat er *dicht bij* de macht?", onderregel, twee gelijkwaardige knoppen, wiel met "Voorbeeldprofiel". Tekst, volgorde en opmaak ongewijzigd laten.
+- Uitlegpagina (`Uitleg.jsx`), introscherm in twee kolommen, resultaatscherm en PDF-opmaak: structuur en stijl ongewijzigd.
+- `PowerWheel.jsx`: afmetingen, ringen, kleuren en labels ongewijzigd.
+
+Nieuwe onderdelen gebruiken dezelfde fonts, kleuren, radii en spacing als bestaande onderdelen. Twijfel je? Vraag het eerst.
