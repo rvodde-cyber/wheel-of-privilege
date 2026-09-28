@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import IntroScreen from "../components/IntroScreen.jsx";
+import InclusieLoontSection from "../components/InclusieLoontSection.jsx";
 import AxisSelector from "../components/AxisSelector.jsx";
 import PowerWheel from "../components/PowerWheel.jsx";
 import {
@@ -313,6 +314,8 @@ export default function TeamSurvey() {
               {copy.backToStartLabel}
             </Link>
           </div>
+
+          <InclusieLoontSection />
 
           <section aria-label="Bronnen">
             <h2 style={styles.subTitle}>Bronnen</h2>

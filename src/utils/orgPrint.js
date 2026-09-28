@@ -12,6 +12,7 @@ import {
   ORG_DISCLAIMER,
 } from "../data/conclusie.js";
 import { config } from "../config.js";
+import { buildInclusieLoontHtml, inclusieLoontPrintCss } from "./inclusieLoontHtml.js";
 
 const POSITION_LABEL = {
   center: "Machtscentrum",
@@ -139,6 +140,7 @@ export function printOrganisatiePdf({ selections, axes, orgCode = "", lensMode =
   }
 
   const bronnen = BRONNEN_APA.map((bron) => `<li>${escapeHtml(bron)}</li>`).join("");
+  const inclusieBlock = buildInclusieLoontHtml(escapeHtml);
   const orgLine = orgCode ? `<p class="meta">Organisatie: ${escapeHtml(orgCode)}</p>` : "";
 
   const html = `<!DOCTYPE html>
@@ -176,6 +178,7 @@ export function printOrganisatiePdf({ selections, axes, orgCode = "", lensMode =
     .warn { color: #9b2c2c; font-weight: 600; }
     .bronnen { list-style: none; padding: 0; margin: 28px 0 0; font-size: 9pt; color: ${config.colors.textMuted}; font-family: ${config.fonts.ui}; }
     .bronnen li { padding-left: 1.5em; text-indent: -1.5em; margin: 0 0 0.45em; }
+    ${inclusieLoontPrintCss()}
     @media print { body { margin: 12mm; } }
   </style>
 </head>
@@ -196,6 +199,7 @@ export function printOrganisatiePdf({ selections, axes, orgCode = "", lensMode =
     </thead>
     <tbody>${rows}</tbody>
   </table>
+  ${inclusieBlock}
   <h2>Bronnen</h2>
   <ul class="bronnen">${bronnen}</ul>
 </body>

@@ -1,4 +1,6 @@
-export const BRONNEN_APA = [
+import { BRONNEN_INCLUSIE } from "./inclusieVoordelen.js";
+
+const BRONNEN_KERN = [
   "Crenshaw, K. (1989). Demarginalizing the intersection of race and sex: A Black feminist critique of antidiscrimination doctrine, feminist theory and antiracist politics. University of Chicago Legal Forum, 1989(1), 139–167.",
   "Ely, R. J., & Thomas, D. A. (2001). Cultural diversity at work: The effects of diversity perspectives on work group processes and outcomes. Administrative Science Quarterly, 46(2), 229–273. https://doi.org/10.2307/2667087",
   "Kanter, R. M. (1977). Men and women of the corporation. Basic Books.",
@@ -8,6 +10,14 @@ export const BRONNEN_APA = [
   "Page, S. E. (2007). The difference: How the power of diversity creates better groups, firms, schools, and societies. Princeton University Press.",
   "van Knippenberg, D., De Dreu, C. K. W., & Homan, A. C. (2004). Work group diversity and group performance: An integrative model and research agenda. Journal of Applied Psychology, 89(6), 1008–1022. https://doi.org/10.1037/0021-9010.89.6.1008",
 ];
+
+function bronSortKey(line) {
+  return line.replace(/^van /i, "").toLocaleLowerCase("nl");
+}
+
+export const BRONNEN_APA = [...new Set([...BRONNEN_KERN, ...BRONNEN_INCLUSIE])].sort((a, b) =>
+  bronSortKey(a).localeCompare(bronSortKey(b), "nl")
+);
 
 /**
  * @param {'kloof' | 'beperkt' | 'geen'} niveau
