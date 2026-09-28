@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import IntroScreen from "../components/IntroScreen.jsx";
 import AxisSelector from "../components/AxisSelector.jsx";
 import PowerWheel from "../components/PowerWheel.jsx";
@@ -11,7 +11,15 @@ import {
   formatTeamQuestion,
   formatTopQuestion,
 } from "../data/axesTeam.js";
-import { computeOrgConclusion, INSUFFICIENT_MESSAGE } from "../data/conclusie.js";
+import { BRONNEN_APA } from "../data/adviesTeksten.js";
+import {
+  computeOrgConclusion,
+  computeKloof,
+  duidingForAxisRow,
+  INSUFFICIENT_MESSAGE,
+  KLOOF_INSUFFICIENT_MESSAGE,
+  ORG_DISCLAIMER,
+} from "../data/conclusie.js";
 import { printOrganisatiePdf } from "../utils/orgPrint.js";
 import { config, getFraming } from "../config.js";
 
@@ -46,6 +54,18 @@ function lensLayers(selections) {
 
 const EMPTY_SELECTIONS = { organisatie: {}, top: {} };
 
+const POSITION_LABEL = {
+  center: "Machtscentrum",
+  middle: "Tussen",
+  periphery: "Periferie",
+  unknown: "Niet ingeschat",
+};
+
+function keuzeLabel(selection) {
+  if (!selection) return "—";
+  return POSITION_LABEL[selection] ?? selection;
+}
+
 export default function TeamSurvey() {
   const { orgCode: rawOrgCode } = useParams();
   const orgCode = rawOrgCode?.trim().toLowerCase() ?? "";
@@ -63,6 +83,13 @@ export default function TeamSurvey() {
     () =>
       step === "result" ? computeOrgConclusion(selections.organisatie, AXES_TEAM) : null,
     [step, selections]
+  );
+  const kloof = useMemo(
+    () =>
+      step === "result" && tweeLenzen
+        ? computeKloof(selections.organisatie, selections.top, AXES_TEAM)
+        : null,
+    [step, tweeLenzen, selections]
   );
 
   useEffect(() => {
@@ -171,12 +198,7 @@ export default function TeamSurvey() {
       <div style={styles.page}>
         <div style={styles.resultWrap}>
           <h1 style={styles.resultTitle}>{copy.resultTitle}</h1>
-          {conclusion && !conclusion.ok && (
-            <p style={styles.warnText}>{INSUFFICIENT_MESSAGE}</p>
-          )}
-          {conclusion?.ok && conclusion.advies && (
-            <p style={styles.resultText}>{conclusion.advies.samenvatting}</p>
-          )}
+          <p style={styles.disclaimer}>{ORG_DISCLAIMER}</p>
 
           <div ref={wheelRef} style={styles.wheelBox}>
             <PowerWheel
@@ -189,6 +211,86 @@ export default function TeamSurvey() {
             />
           </div>
 
+          <section style={styles.section}>
+            <h2 style={styles.sectionTitle}>Conclusie</h2>
+            {conclusion && !conclusion.ok && (
+              <p style={styles.warnText}>{INSUFFICIENT_MESSAGE}</p>
+            )}
+            {conclusion?.ok && conclusion.advies && (
+              <>
+                <p style={styles.bodyText}>{conclusion.advies.samenvatting}</p>
+                <h3 style={styles.subTitle}>Onderbouwing</h3>
+                <p style={styles.bodyText}>{conclusion.advies.onderbouwing}</p>
+                <h3 style={styles.subTitle}>Advies</h3>
+                <p style={styles.bodyText}>{conclusion.advies.advies}</p>
+              </>
+            )}
+          </section>
+
+          {tweeLenzen && kloof && (
+            <section style={styles.section}>
+              <h2 style={styles.sectionTitle}>Kloof tussen organisatie en top</h2>
+              {!kloof.ok && <p style={styles.warnText}>{KLOOF_INSUFFICIENT_MESSAGE}</p>}
+              {kloof.ok && kloof.advies && (
+                <>
+                  <p style={styles.bodyText}>{kloof.advies.samenvatting}</p>
+                  {kloof.topDichterBij.length > 0 && (
+                    <>
+                      <h3 style={styles.subTitle}>
+                        Onderwerpen waar de top dichter bij het machtscentrum zit
+                      </h3>
+                      <ul style={styles.kloofList}>
+                        {kloof.topDichterBij.map((as) => (
+                          <li key={as.id}>{as.titel}</li>
+                        ))}
+                      </ul>
+                    </>
+                  )}
+                  <h3 style={styles.subTitle}>Onderbouwing</h3>
+                  <p style={styles.bodyText}>{kloof.advies.onderbouwing}</p>
+                  <h3 style={styles.subTitle}>Advies</h3>
+                  <p style={styles.bodyText}>{kloof.advies.advies}</p>
+                </>
+              )}
+            </section>
+          )}
+
+          <section style={styles.section}>
+            <h2 style={styles.sectionTitle}>Per onderwerp</h2>
+            <div style={styles.tableWrap}>
+              <table style={styles.table}>
+                <thead>
+                  <tr>
+                    <th style={styles.th}>Onderwerp</th>
+                    <th style={styles.th}>Organisatie</th>
+                    {tweeLenzen && <th style={styles.th}>Top</th>}
+                    <th style={styles.th}>Duiding</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {AXES_TEAM.map((axis) => (
+                    <tr key={axis.id}>
+                      <td style={styles.td}>{axis.titel}</td>
+                      <td style={styles.td}>{keuzeLabel(selections.organisatie[axis.id])}</td>
+                      {tweeLenzen && (
+                        <td style={styles.td}>{keuzeLabel(selections.top[axis.id])}</td>
+                      )}
+                      <td style={styles.td}>
+                        {duidingForAxisRow(
+                          axis,
+                          selections.organisatie,
+                          selections.top,
+                          tweeLenzen,
+                          kloof?.perAs
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+
           <div style={styles.actions}>
             <button
               type="button"
@@ -200,7 +302,21 @@ export default function TeamSurvey() {
             <button type="button" onClick={restart} style={styles.secondaryBtn}>
               {copy.restartLabel}
             </button>
+            <Link to="/" style={styles.textLink}>
+              {copy.backToStartLabel}
+            </Link>
           </div>
+
+          <section aria-label="Bronnen">
+            <h2 style={styles.subTitle}>Bronnen</h2>
+            <ul style={styles.sources}>
+              {BRONNEN_APA.map((bron) => (
+                <li key={bron} style={styles.sourceItem}>
+                  {bron}
+                </li>
+              ))}
+            </ul>
+          </section>
         </div>
       </div>
     );
@@ -391,23 +507,82 @@ const styles = {
     textAlign: "center",
   },
   resultWrap: {
-    maxWidth: 680,
+    maxWidth: 760,
     margin: "0 auto",
-    padding: "24px 12px 48px",
-    textAlign: "center",
+    padding: "28px 20px 56px",
   },
   resultTitle: {
     fontFamily: config.fonts.voice,
     fontSize: "1.75rem",
     fontWeight: 600,
     margin: "0 0 12px",
+    lineHeight: 1.25,
   },
-  resultText: {
+  disclaimer: {
+    fontFamily: config.fonts.ui,
+    fontSize: "0.875rem",
+    color: config.colors.textMuted,
+    lineHeight: 1.5,
+    margin: "0 0 16px",
+    padding: "12px 14px",
+    background: "#F4FAF7",
+    border: `1px solid ${config.colors.border}`,
+    borderRadius: 8,
+  },
+  section: {
+    margin: "8px 0 28px",
+  },
+  sectionTitle: {
+    fontFamily: config.fonts.voice,
+    fontSize: "1.25rem",
+    fontWeight: 600,
+    margin: "0 0 10px",
+  },
+  subTitle: {
+    fontFamily: config.fonts.ui,
+    fontSize: "0.75rem",
+    fontWeight: 700,
+    letterSpacing: "0.05em",
+    textTransform: "uppercase",
+    color: config.colors.textMuted,
+    margin: "16px 0 6px",
+  },
+  bodyText: {
     fontFamily: config.fonts.voice,
     fontSize: "1rem",
-    color: config.colors.textMuted,
+    color: config.colors.text,
     lineHeight: 1.6,
-    margin: "0 0 20px",
+    margin: "0 0 8px",
+  },
+  kloofList: {
+    fontFamily: config.fonts.voice,
+    fontSize: "1rem",
+    lineHeight: 1.5,
+    margin: "0 0 8px",
+    paddingLeft: 20,
+  },
+  tableWrap: {
+    overflowX: "auto",
+  },
+  table: {
+    width: "100%",
+    borderCollapse: "collapse",
+    fontFamily: config.fonts.ui,
+    fontSize: "0.875rem",
+  },
+  th: {
+    textAlign: "left",
+    padding: "8px 10px",
+    background: "#EEF9F4",
+    border: `1px solid ${config.colors.border}`,
+    fontWeight: 700,
+  },
+  td: {
+    textAlign: "left",
+    padding: "8px 10px",
+    border: `1px solid ${config.colors.border}`,
+    verticalAlign: "top",
+    lineHeight: 1.45,
   },
   warnText: {
     fontFamily: config.fonts.ui,
@@ -424,9 +599,30 @@ const styles = {
   },
   actions: {
     display: "flex",
-    flexDirection: "column",
+    flexWrap: "wrap",
     gap: 12,
     alignItems: "center",
+    marginTop: 8,
+  },
+  textLink: {
+    fontFamily: config.fonts.ui,
+    fontSize: "0.9375rem",
+    color: config.colors.dotStrong,
+    fontWeight: 600,
+  },
+  sources: {
+    listStyle: "none",
+    padding: 0,
+    margin: "0 0 8px",
+  },
+  sourceItem: {
+    fontFamily: config.fonts.ui,
+    fontSize: "0.75rem",
+    color: config.colors.textMuted,
+    lineHeight: 1.45,
+    marginBottom: 8,
+    paddingLeft: "1.5em",
+    textIndent: "-1.5em",
   },
   errorTitle: {
     fontFamily: config.fonts.voice,

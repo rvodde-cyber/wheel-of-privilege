@@ -29,6 +29,12 @@ export const POSITION_DUIDING = {
 export const INSUFFICIENT_MESSAGE =
   "Te weinig ingeschatte onderwerpen voor een conclusie (minimaal 6). Vul meer onderwerpen in.";
 
+export const KLOOF_INSUFFICIENT_MESSAGE =
+  "Te weinig onderwerpen waarbij beide lenzen zijn ingeschat voor een kloofconclusie (minimaal 6).";
+
+export const ORG_DISCLAIMER =
+  "Ingevuld door één professional op basis van een persoonlijke indruk; geen meting.";
+
 /**
  * @param {number | null} verschil
  */
