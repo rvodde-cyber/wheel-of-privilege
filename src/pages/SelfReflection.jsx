@@ -24,10 +24,12 @@ export default function SelfReflection() {
         width: 100%;
         display: flex;
         justify-content: center;
-        padding: 8px 4px 4px;
+        padding: 12px 8px 8px;
         background: linear-gradient(180deg, #EEF9F4 0%, #FFFFFF 100%);
         border-bottom: 1px solid #D8E8E2;
+        overflow: visible;
       }
+      .wop-form-col { padding-top: 24px; }
       @media (min-width: 768px) {
         .wop-survey-layout { flex-direction: row; align-items: flex-start; gap: 24px; padding-top: 16px; }
         .wop-wheel-hero {
@@ -38,7 +40,7 @@ export default function SelfReflection() {
           border-radius: 16px;
           padding: 16px 8px;
         }
-        .wop-form-col { flex: 1; min-width: 0; }
+        .wop-form-col { flex: 1; min-width: 0; padding-top: 8px; }
       }
     `;
     document.head.appendChild(el);
@@ -86,9 +88,12 @@ export default function SelfReflection() {
     const img = new Image();
     img.onload = () => {
       const scale = 2;
+      const vb = svg.viewBox.baseVal;
+      const w = vb.width || 504;
+      const h = vb.height || 504;
       const canvas = document.createElement("canvas");
-      canvas.width = 400 * scale;
-      canvas.height = 400 * scale;
+      canvas.width = w * scale;
+      canvas.height = h * scale;
       const ctx = canvas.getContext("2d");
       ctx.fillStyle = config.colors.surface2;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -207,7 +212,7 @@ const styles = {
   surveyLayout: {
     maxWidth: 1100,
     margin: "0 auto",
-    padding: "0 8px 48px",
+    padding: "16px 8px 48px",
   },
   formCol: {
     flex: 1,
@@ -219,8 +224,8 @@ const styles = {
     color: config.colors.textMuted,
     textTransform: "uppercase",
     letterSpacing: "0.06em",
-    margin: "0 0 12px",
-    padding: "0 20px",
+    margin: "8px 0 12px",
+    padding: "12px 20px 0",
   },
   nav: {
     display: "flex",

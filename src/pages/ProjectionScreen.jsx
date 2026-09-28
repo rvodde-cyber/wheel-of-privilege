@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { config } from "../config.js";
 
 export default function ProjectionScreen() {
@@ -9,8 +9,13 @@ export default function ProjectionScreen() {
       <div style={styles.wrap}>
         <h1 style={styles.title}>Projectiescherm</h1>
         <p style={styles.text}>
-          Route <code>/scan/{orgCode}</code> — beschikbaar in sessie 3.
+          In de lokale organisatiescan worden antwoorden niet centraal verzameld.
+          Er is daarom geen live projectiewiel via <code>/scan/{orgCode}</code>.
         </p>
+        <p style={styles.text}>
+          Gebruik het resultaat en de PDF op het apparaat waarmee de scan is ingevuld.
+        </p>
+        <Link to="/" style={styles.link}>Terug naar start</Link>
       </div>
     </div>
   );
@@ -28,6 +33,7 @@ const styles = {
   wrap: {
     textAlign: "center",
     padding: 32,
+    maxWidth: 480,
   },
   title: {
     fontFamily: config.fonts.voice,
@@ -36,6 +42,14 @@ const styles = {
   },
   text: {
     fontFamily: config.fonts.ui,
-    opacity: 0.8,
+    opacity: 0.85,
+    lineHeight: 1.6,
+    marginBottom: 12,
+  },
+  link: {
+    fontFamily: config.fonts.ui,
+    color: config.colors.projectionStroke,
+    fontWeight: 600,
+    textDecoration: "none",
   },
 };

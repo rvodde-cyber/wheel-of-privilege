@@ -1,6 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Landing from "./pages/Landing.jsx";
 import SelfReflection from "./pages/SelfReflection.jsx";
 import TeamSurvey from "./pages/TeamSurvey.jsx";
 import ProjectionScreen from "./pages/ProjectionScreen.jsx";
@@ -27,7 +28,8 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<SelfReflection />} />
+        <Route path="/" element={<Landing />} />
+        <Route path="/individu" element={<SelfReflection />} />
         <Route path="/team/:orgCode" element={<TeamSurvey />} />
         <Route path="/scan/:orgCode" element={<ProjectionScreen />} />
       </Routes>

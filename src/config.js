@@ -12,6 +12,9 @@ export const ATTRIBUTION =
   '"White Privilege: Unpacking the Invisible Knapsack" (Peggy McIntosh, 1989), ' +
   "matrix of domination (Patricia Hill Collins), en De zeven vinkjes (Joris Luyendijk, 2022).";
 
+export const ORG_ATTRIBUTION =
+  "Geïnspireerd op Crenshaw (1989), McIntosh (1989) en Luyendijk (2022).";
+
 export const POSITIONS = {
   center: { key: "center", label: "Machtscentrum", ring: 0 },
   middle: { key: "middle", label: "Tussenpositie", ring: 1 },
@@ -72,27 +75,19 @@ export const config = {
       privacyNote: "Alles blijft lokaal op dit apparaat. Geen data verlaat je toestel.",
     },
     team: {
-      subtitle: "Waar zit volgens jou de grootste groep collega's?",
-      intro:
-        "Geef per as aan waar jij denkt dat de grootste groep collega's zit. " +
-        "Je geeft geen eigen positie aan — alleen je perceptie van de organisatie. " +
-        "Je antwoord wordt anoniem opgeteld; er worden geen individuele gegevens bewaard.",
+      subtitle: "",
+      intro: "",
       startLabel: "Begin organisatiescan",
       nextLabel: "Volgende",
       prevLabel: "Vorige",
-      finishLabel: "Versturen",
-      progressLabel: "As",
-      axisInstruction:
-        "Kies het onderdeel dat volgens jou het beste past bij de grootste groep collega's.",
-      privacyNote:
-        "Alleen tellers worden opgeslagen — nooit jouw individuele antwoorden.",
-      previewNote: "Live voorvertoning van jouw perceptie — niet het org-resultaat.",
-      thankYouTitle: "Bedankt",
-      thankYouText:
-        "Je antwoord telt mee. Het organisatiewiel wordt zichtbaar zodra voldoende " +
-        "collega's hebben bijgedragen.",
-      submittingLabel: "Versturen…",
-      errorLabel: "Versturen mislukt. Probeer het opnieuw.",
+      finishLabel: "Bekijk resultaat",
+      progressLabel: "Onderwerp",
+      axisInstruction: "",
+      privacyNote: "",
+      previewNote: "Live voorvertoning van jouw indruk.",
+      resultTitle: "Resultaat organisatiescan",
+      downloadPdfLabel: "Download PDF",
+      restartLabel: "Opnieuw beginnen",
     },
   },
 
@@ -119,28 +114,38 @@ export const config = {
       privacyNote: "Alles blijft lokaal op dit apparaat. Geen data verlaat je toestel.",
     },
     team: {
-      subtitle: "Waar zit volgens jou de grootste groep collega's?",
-      intro:
-        "Geef per as aan waar jij denkt dat de grootste groep collega's zit. " +
-        "Je geeft geen eigen positie aan — alleen je perceptie van de organisatie. " +
-        "Je antwoord wordt anoniem opgeteld; er worden geen individuele gegevens bewaard.",
-      startLabel: "Begin scan",
+      subtitle: "",
+      intro: "",
+      startLabel: "Begin organisatiescan",
       nextLabel: "Volgende",
       prevLabel: "Vorige",
-      finishLabel: "Versturen",
-      progressLabel: "As",
-      axisInstruction:
-        "Kies het onderdeel dat volgens jou het beste past bij de grootste groep collega's.",
-      privacyNote:
-        "Alleen tellers worden opgeslagen — nooit jouw individuele antwoorden.",
-      previewNote: "Live voorvertoning van jouw perceptie — niet het org-resultaat.",
-      thankYouTitle: "Bedankt",
-      thankYouText:
-        "Je antwoord telt mee. Het organisatiewiel wordt zichtbaar zodra voldoende " +
-        "collega's hebben bijgedragen.",
-      submittingLabel: "Versturen…",
-      errorLabel: "Versturen mislukt. Probeer het opnieuw.",
+      finishLabel: "Bekijk resultaat",
+      progressLabel: "Onderwerp",
+      axisInstruction: "",
+      privacyNote: "",
+      previewNote: "Live voorvertoning van jouw indruk.",
+      resultTitle: "Resultaat organisatiescan",
+      downloadPdfLabel: "Download PDF",
+      restartLabel: "Opnieuw beginnen",
     },
+  },
+
+  landing: {
+    intro:
+      "Verken macht en privilege op elf assen. Kies de variant die bij jouw situatie past.",
+    individualTitle: "Individuele reflectie",
+    individualDescription:
+      "Waar sta jij ten opzichte van het machtscentrum? Volledig lokaal — " +
+      "niets wordt opgeslagen of verstuurd.",
+    individualCta: "Start individuele reflectie",
+    teamTitle: "Organisatiescan",
+    teamDescription:
+      "Geef als professional je indruk van de grootste groep collega's per onderwerp. " +
+      "Volledig lokaal — aan het eind kun je een PDF downloaden.",
+    teamCta: "Start organisatiescan",
+    orgCodeLabel: "Organisatiecode",
+    orgCodePlaceholder: "bijv. demo",
+    orgCodeError: "Voer een geldige organisatiecode in (letters, cijfers, - of _).",
   },
 };
 

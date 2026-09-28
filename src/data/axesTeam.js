@@ -1,145 +1,162 @@
+export const TUSSEN =
+  "Gemengd beeld zonder duidelijke meerderheid, of het beeld verschilt tussen de werkvloer en de top.";
+
+export const ONBEKEND = "Dat kan ik niet inschatten.";
+
+/** @param {{ vraagdeel: string }} axis */
+export function formatTeamQuestion(axis) {
+  return `Waar zit volgens jou de grootste groep collega's ${axis.vraagdeel}?`;
+}
+
 export const AXES_TEAM = [
   {
     id: "opleiding",
-    label: "Opleidingsniveau",
+    label: "Opleiding",
     shortLabel: "Opleiding",
-    positions: {
-      center:
-        "De grootste groep collega's heeft een hbo-, wo- of vergelijkbaar academisch diploma.",
-      middle:
-        "De grootste groep collega's heeft mbo of havo als hoogst afgeronde opleiding.",
-      periphery:
-        "De grootste groep collega's heeft vmbo of lager als hoogst afgeronde opleiding.",
+    titel: "Opleidingsniveau",
+    vraagdeel: "qua opleidingsniveau",
+    hint: "Denk aan diploma's op de werkvloer én in management en directie.",
+    opties: {
+      centrum:
+        "De meeste collega's hebben een hbo-, wo- of vergelijkbaar academisch diploma.",
+      periferie:
+        "De meeste collega's hebben vmbo, lbo of geen formele diploma's als hoogste opleiding.",
     },
   },
   {
     id: "klasse",
-    label: "Sociaaleconomische klasse",
+    label: "Klasse",
     shortLabel: "Klasse",
-    positions: {
-      center:
-        "De grootste groep collega's groeide op met financiële zekerheid en ruimte voor onverwachte uitgaven.",
-      middle:
-        "De grootste groep collega's groeide op met voldoende middelen, maar zonder grote financiële buffer.",
-      periphery:
-        "De grootste groep collega's groeide op met weinig financiële ruimte en regelmatige geldzorgen.",
+    titel: "Sociaaleconomische klasse",
+    vraagdeel: "qua sociaaleconomische achtergrond",
+    hint: "Denk aan financiële ruimte en levensstijl die je om je heen ziet.",
+    opties: {
+      centrum:
+        "De meeste collega's komen uit een midden- of hogere klasse en hebben weinig financiële zorgen.",
+      periferie:
+        "De meeste collega's komen uit de arbeidersklasse of hebben regelmatig financiële zorgen.",
     },
   },
   {
     id: "ouders",
-    label: "Ouderlijke achtergrond",
+    label: "Ouders",
     shortLabel: "Ouders",
-    positions: {
-      center:
-        "De grootste groep collega's heeft ouders met hbo/wo-opleiding en/of aanzienlijke maatschappelijke positie.",
-      middle:
-        "De grootste groep collega's heeft ouders met mbo/havo en een stabiele maar bescheiden positie.",
-      periphery:
-        "De grootste groep collega's heeft ouders met weinig formele opleiding en beperkte financiële middelen.",
+    titel: "Ouderlijke achtergrond",
+    vraagdeel: "qua achtergrond van hun ouders",
+    hint: "Denk aan opleiding en welstand van de ouders, voor zover bekend.",
+    opties: {
+      centrum:
+        "De meeste collega's hebben minstens één hoogopgeleide of welgestelde ouder.",
+      periferie:
+        "De meeste collega's hebben ouders zonder hoge opleiding of met weinig financiële middelen.",
     },
   },
   {
     id: "etniciteit",
-    label: "Etniciteit / huidskleur",
+    label: "Etniciteit",
     shortLabel: "Etniciteit",
-    positions: {
-      center:
-        "De grootste groep collega's wordt gezien als wit of behoort tot de dominant aanwezige etnische groep.",
-      middle:
-        "De grootste groep collega's behoort tot een zichtbare maar regelmatig vertegenwoordigde etnische groep.",
-      periphery:
-        "De grootste groep collega's behoort tot een etnische groep die structureel ondervertegenwoordigd is.",
+    titel: "Etniciteit / huidskleur",
+    vraagdeel: "qua etniciteit en huidskleur",
+    hint: "Kijk zowel naar de werkvloer als naar de top.",
+    opties: {
+      centrum:
+        "De meeste collega's zijn wit en hebben een Nederlandse of westerse achtergrond.",
+      periferie:
+        "De meeste collega's hebben een niet-westerse achtergrond of behoren tot een minderheidsgroep.",
     },
   },
   {
     id: "gender",
     label: "Gender",
     shortLabel: "Gender",
-    positions: {
-      center:
-        "De grootste groep collega's identificeert als man en wordt als man gezien.",
-      middle:
-        "De grootste groep collega's heeft een genderidentiteit die afwijkt van de dominante norm, zonder structurele uitsluiting.",
-      periphery:
-        "De grootste groep collega's identificeert als vrouw, non-binair of transgender.",
+    titel: "Gender",
+    vraagdeel: "qua gender",
+    hint: "Kijk zowel naar de werkvloer als naar de top; het beeld kan verschillen.",
+    opties: {
+      centrum: "Mannen vormen de grootste groep, zeker in de hogere lagen.",
+      periferie:
+        "Vrouwen, non-binaire of transgender collega's vormen de grootste groep, ook in de hogere lagen.",
     },
   },
   {
     id: "seksualiteit",
-    label: "Seksuele oriëntatie",
+    label: "Seksualiteit",
     shortLabel: "Seksualiteit",
-    positions: {
-      center:
-        "De grootste groep collega's is heteroseksueel.",
-      middle:
-        "De grootste groep collega's identificeert als bi+, pan of queer.",
-      periphery:
-        "De grootste groep collega's identificeert als lhbtiq+.",
+    titel: "Seksuele oriëntatie",
+    vraagdeel: "qua seksuele oriëntatie",
+    hint:
+      "Vaak niet zichtbaar: kijk naar wat in de cultuur als vanzelfsprekend geldt, niet naar individuen.",
+    opties: {
+      centrum: "Volgens mijn indruk is heteroseksualiteit de onuitgesproken norm.",
+      periferie: "Volgens mijn indruk is de LHBTIQ+-gemeenschap de grootste groep.",
     },
   },
   {
     id: "religie",
-    label: "Religie / levensbeschouwing",
+    label: "Religie",
     shortLabel: "Religie",
-    positions: {
-      center:
-        "De grootste groep collega's is atheïst, agnost of behoort tot de dominante levensbeschouwing.",
-      middle:
-        "De grootste groep collega's heeft een levensbeschouwing die afwijkt maar grotendeels geaccepteerd wordt.",
-      periphery:
-        "De grootste groep collega's behoort tot een religieuze of levensbeschouwelijke minderheid.",
+    titel: "Religie / levensbeschouwing",
+    vraagdeel: "qua religie en levensbeschouwing",
+    hint: "Denk aan feestdagen, gebruiken en wat als 'gewoon' geldt.",
+    opties: {
+      centrum:
+        "De meeste collega's zijn seculier of christelijk (de dominante culturele norm).",
+      periferie:
+        "De meeste collega's zijn moslim, joods of hebben een andere levensovertuiging.",
     },
   },
   {
     id: "taal",
-    label: "Taal (moedertaal)",
+    label: "Taal",
     shortLabel: "Taal",
-    positions: {
-      center:
-        "De grootste groep collega's heeft de dominante taal als moedertaal zonder hoorbaar accent.",
-      middle:
-        "De grootste groep collega's spreekt de dominante taal vloeiend, maar het is niet ieders moedertaal.",
-      periphery:
-        "De grootste groep collega's heeft een andere moedertaal en moet extra moeite doen in de dominante taal.",
+    titel: "Taal",
+    vraagdeel: "qua moedertaal",
+    hint: "Denk aan de taal in overleg en op de gang.",
+    opties: {
+      centrum: "De meeste collega's hebben Nederlands als moedertaal.",
+      periferie:
+        "De meeste collega's hebben een andere moedertaal of zijn meertalig.",
     },
   },
   {
     id: "gezondheid",
-    label: "Gezondheid / lichamelijke beperking",
+    label: "Gezondheid",
     shortLabel: "Gezondheid",
-    positions: {
-      center:
-        "De grootste groep collega's heeft geen chronische ziekte of lichamelijke beperking met structurele impact.",
-      middle:
-        "De grootste groep collega's heeft een beperking die soms impact heeft, met redelijke aanpassingen.",
-      periphery:
-        "De grootste groep collega's heeft een beperking die regelmatig toegang tot werk of voorzieningen beperkt.",
+    titel: "Gezondheid / lichamelijke beperking",
+    vraagdeel: "qua gezondheid en beperkingen",
+    hint: "Baseer je alleen op wat bekend en bespreekbaar is.",
+    opties: {
+      centrum:
+        "Voor zover bekend heeft de meerderheid geen chronische ziekte of beperking.",
+      periferie:
+        "Voor zover bekend heeft de meerderheid een chronische ziekte of beperking.",
     },
   },
   {
-    id: "neurodiversiteit",
-    label: "Neurodiversiteit",
+    id: "neuro",
+    label: "Neuro",
     shortLabel: "Neuro",
-    positions: {
-      center:
-        "De grootste groep collega's denkt en leert op een manier die als 'normaal' wordt gezien.",
-      middle:
-        "De grootste groep collega's is neurodivergent en heeft soms extra aanpassing nodig.",
-      periphery:
-        "De grootste groep collega's is neurodivergent en heeft structureel aanpassingen nodig die niet vanzelf komen.",
+    titel: "Neurodiversiteit",
+    vraagdeel: "qua neurodiversiteit",
+    hint: "Baseer je alleen op wat bekend en bespreekbaar is.",
+    opties: {
+      centrum: "Voor zover bekend is de meerderheid neurotypisch.",
+      periferie:
+        "Voor zover bekend is de meerderheid neurodivers (bijvoorbeeld ADHD, autisme, dyslexie).",
     },
   },
   {
     id: "migratie",
-    label: "Immigratiestatus",
+    label: "Migratie",
     shortLabel: "Migratie",
-    positions: {
-      center:
-        "De grootste groep collega's is geboren in dit land; ook hun ouders.",
-      middle:
-        "De grootste groep collega's is geboren in dit land, met minstens één ouder geboren in een ander land.",
-      periphery:
-        "De grootste groep collega's is zelf in een ander land geboren en/of heeft een migratieachtergrond.",
+    titel: "Migratieachtergrond",
+    vraagdeel: "qua migratieachtergrond",
+    hint:
+      "Het gaat om geboorteland van collega's en hun ouders, nooit om verblijfsstatus.",
+    opties: {
+      centrum: "De meeste collega's zijn in Nederland geboren, net als hun ouders.",
+      periferie:
+        "De meeste collega's zijn zelf of via hun ouders buiten Nederland geboren.",
     },
   },
 ];

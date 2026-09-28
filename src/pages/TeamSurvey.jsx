@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import IntroScreen from "../components/IntroScreen.jsx";
 import AxisSelector from "../components/AxisSelector.jsx";
 import PowerWheel from "../components/PowerWheel.jsx";
 import { AXES_TEAM } from "../data/axesTeam.js";
+import { computeOrgConclusion, INSUFFICIENT_MESSAGE } from "../data/conclusie.js";
+import { printOrganisatiePdf } from "../utils/orgPrint.js";
 import { config, getFraming } from "../config.js";
 
 const ORG_CODE_PATTERN = /^[a-z0-9][a-z0-9_-]{0,31}$/i;
@@ -21,8 +23,12 @@ export default function TeamSurvey() {
   const [step, setStep] = useState("intro");
   const [axisIndex, setAxisIndex] = useState(0);
   const [selections, setSelections] = useState({});
-  const [submitting, setSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState("");
+  const wheelRef = useRef(null);
+
+  const conclusion = useMemo(
+    () => (step === "result" ? computeOrgConclusion(selections, AXES_TEAM) : null),
+    [step, selections]
+  );
 
   useEffect(() => {
     const id = "wop-survey-layout";
@@ -36,10 +42,12 @@ export default function TeamSurvey() {
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 8px 4px 4px;
+        padding: 12px 8px 8px;
         background: linear-gradient(180deg, #EEF9F4 0%, #FFFFFF 100%);
         border-bottom: 1px solid #D8E8E2;
+        overflow: visible;
       }
+      .wop-form-col { padding-top: 24px; }
       @media (min-width: 768px) {
         .wop-survey-layout { flex-direction: row; align-items: flex-start; gap: 24px; padding-top: 16px; }
         .wop-wheel-hero {
@@ -50,7 +58,7 @@ export default function TeamSurvey() {
           border-radius: 16px;
           padding: 16px 8px;
         }
-        .wop-form-col { flex: 1; min-width: 0; }
+        .wop-form-col { flex: 1; min-width: 0; padding-top: 8px; }
       }
     `;
     document.head.appendChild(el);
@@ -78,48 +86,27 @@ export default function TeamSurvey() {
       ...prev,
       [currentAxis.id]: position,
     }));
-    setSubmitError("");
   }
 
-  async function submitSurvey() {
-    setSubmitting(true);
-    setSubmitError("");
-
-    try {
-      const response = await fetch("/api/aggregate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ orgCode, answers: selections }),
-      });
-
-      const data = await response.json().catch(() => ({}));
-      if (!response.ok) {
-        throw new Error(data.error || copy.errorLabel);
-      }
-
-      setStep("thanks");
-    } catch (error) {
-      setSubmitError(error.message || copy.errorLabel);
-    } finally {
-      setSubmitting(false);
-    }
-  }
-
-  async function goNext() {
-    if (!canProceed || submitting) return;
-
+  function goNext() {
+    if (!canProceed) return;
     if (isLastAxis) {
-      await submitSurvey();
+      setStep("result");
       return;
     }
-
     setAxisIndex((i) => i + 1);
   }
 
   function goPrev() {
-    if (axisIndex > 0 && !submitting) {
+    if (axisIndex > 0) {
       setAxisIndex((i) => i - 1);
     }
+  }
+
+  function restart() {
+    setStep("intro");
+    setAxisIndex(0);
+    setSelections({});
   }
 
   if (step === "intro") {
@@ -130,13 +117,40 @@ export default function TeamSurvey() {
     );
   }
 
-  if (step === "thanks") {
+  if (step === "result") {
     return (
       <div style={styles.page}>
-        <div style={styles.centerWrap}>
-          <h1 style={styles.thanksTitle}>{copy.thankYouTitle}</h1>
-          <p style={styles.thanksText}>{copy.thankYouText}</p>
-          <p style={styles.orgBadge}>Organisatie: {orgCode}</p>
+        <div style={styles.resultWrap}>
+          <h1 style={styles.resultTitle}>{copy.resultTitle}</h1>
+          {conclusion && !conclusion.ok && (
+            <p style={styles.warnText}>{INSUFFICIENT_MESSAGE}</p>
+          )}
+          {conclusion?.ok && conclusion.advies && (
+            <p style={styles.resultText}>{conclusion.advies.samenvatting}</p>
+          )}
+
+          <div ref={wheelRef} style={styles.wheelBox}>
+            <PowerWheel
+              variant="filled"
+              size="large"
+              selections={selections}
+              axes={AXES_TEAM}
+              ariaLabel="Organisatie-indruk op het machtskruising"
+            />
+          </div>
+
+          <div style={styles.actions}>
+            <button
+              type="button"
+              onClick={() => printOrganisatiePdf(selections, AXES_TEAM, orgCode)}
+              style={styles.primaryBtn}
+            >
+              {copy.downloadPdfLabel}
+            </button>
+            <button type="button" onClick={restart} style={styles.secondaryBtn}>
+              {copy.restartLabel}
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -152,7 +166,7 @@ export default function TeamSurvey() {
             selections={selections}
             axes={AXES_TEAM}
             highlightAxisIndex={axisIndex}
-            ariaLabel="Voorvertoning organisatieperceptie"
+            ariaLabel="Voorvertoning organisatie-indruk"
           />
           <p style={styles.previewNote}>{copy.previewNote}</p>
         </div>
@@ -164,40 +178,29 @@ export default function TeamSurvey() {
           </p>
 
           <AxisSelector
+            mode="team"
             axis={currentAxis}
             selected={selections[currentAxis.id]}
             onSelect={handleSelect}
-            instruction={copy.axisInstruction}
           />
-
-          {submitError && <p style={styles.errorBanner}>{submitError}</p>}
 
           <div style={styles.nav}>
             {axisIndex > 0 && (
-              <button
-                type="button"
-                onClick={goPrev}
-                disabled={submitting}
-                style={styles.secondaryBtn}
-              >
+              <button type="button" onClick={goPrev} style={styles.secondaryBtn}>
                 {copy.prevLabel}
               </button>
             )}
             <button
               type="button"
               onClick={goNext}
-              disabled={!canProceed || submitting}
+              disabled={!canProceed}
               style={{
                 ...styles.primaryBtn,
-                opacity: canProceed && !submitting ? 1 : 0.45,
-                cursor: canProceed && !submitting ? "pointer" : "not-allowed",
+                opacity: canProceed ? 1 : 0.45,
+                cursor: canProceed ? "pointer" : "not-allowed",
               }}
             >
-              {submitting
-                ? copy.submittingLabel
-                : isLastAxis
-                  ? copy.finishLabel
-                  : copy.nextLabel}
+              {isLastAxis ? copy.finishLabel : copy.nextLabel}
             </button>
           </div>
         </div>
@@ -215,7 +218,7 @@ const styles = {
   surveyLayout: {
     maxWidth: 1100,
     margin: "0 auto",
-    padding: "0 8px 48px",
+    padding: "16px 8px 48px",
   },
   formCol: {
     flex: 1,
@@ -238,7 +241,7 @@ const styles = {
     textTransform: "uppercase",
     letterSpacing: "0.06em",
     margin: "8px 0 12px",
-    padding: "0 20px",
+    padding: "12px 20px 0",
   },
   previewNote: {
     fontFamily: config.fonts.ui,
@@ -284,26 +287,43 @@ const styles = {
     padding: "48px 24px",
     textAlign: "center",
   },
-  thanksTitle: {
+  resultWrap: {
+    maxWidth: 680,
+    margin: "0 auto",
+    padding: "24px 12px 48px",
+    textAlign: "center",
+  },
+  resultTitle: {
     fontFamily: config.fonts.voice,
     fontSize: "1.75rem",
     fontWeight: 600,
-    margin: "0 0 16px",
+    margin: "0 0 12px",
   },
-  thanksText: {
+  resultText: {
     fontFamily: config.fonts.voice,
     fontSize: "1rem",
     color: config.colors.textMuted,
-    lineHeight: 1.65,
+    lineHeight: 1.6,
     margin: "0 0 20px",
   },
-  orgBadge: {
+  warnText: {
     fontFamily: config.fonts.ui,
-    fontSize: "0.8125rem",
+    fontSize: "0.9375rem",
+    color: "#9B2C2C",
     fontWeight: 600,
-    color: config.colors.dotStrong,
-    textTransform: "uppercase",
-    letterSpacing: "0.05em",
+    margin: "0 0 16px",
+  },
+  wheelBox: {
+    marginBottom: 28,
+    padding: "12px 0",
+    background: "linear-gradient(180deg, #EEF9F4 0%, #FFFFFF 100%)",
+    borderRadius: 16,
+  },
+  actions: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 12,
+    alignItems: "center",
   },
   errorTitle: {
     fontFamily: config.fonts.voice,
@@ -315,15 +335,5 @@ const styles = {
     fontSize: "1rem",
     color: config.colors.textMuted,
     lineHeight: 1.6,
-  },
-  errorBanner: {
-    fontFamily: config.fonts.ui,
-    fontSize: "0.875rem",
-    color: "#9B2C2C",
-    background: "#FEF2F2",
-    border: "1px solid #FECACA",
-    borderRadius: 8,
-    margin: "16px 20px 0",
-    padding: "10px 14px",
   },
 };

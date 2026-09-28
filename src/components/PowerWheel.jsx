@@ -5,7 +5,10 @@ const AXIS_COUNT = 11;
 const CX = 200;
 const CY = 200;
 const RING_RADII = [52, 96, 140];
-const LABEL_RADIUS = 172;
+const LABEL_RADIUS = 158;
+const VIEWBOX_MIN = -52;
+const VIEWBOX_SIZE = 504;
+const AXIS_OUTER = RING_RADII[2] + 2;
 
 const POSITION_RING = {
   center: 0,
@@ -33,7 +36,7 @@ function pointAt(index, radius) {
 }
 
 function positionToRing(position) {
-  if (position == null) return null;
+  if (position == null || position === "unknown") return null;
   return POSITION_RING[position] ?? null;
 }
 
@@ -83,7 +86,8 @@ export default function PowerWheel({
 
   return (
     <svg
-      viewBox="0 0 400 400"
+      viewBox={`${VIEWBOX_MIN} ${VIEWBOX_MIN} ${VIEWBOX_SIZE} ${VIEWBOX_SIZE}`}
+      overflow="visible"
       role="img"
       aria-label={ariaLabel}
       style={{
@@ -91,6 +95,7 @@ export default function PowerWheel({
         maxWidth: resolvedMaxWidth,
         height: "auto",
         display: "block",
+        overflow: "visible",
         filter: isDots && !projection ? "drop-shadow(0 8px 24px rgba(29, 158, 117, 0.18))" : "none",
       }}
     >
@@ -104,7 +109,14 @@ export default function PowerWheel({
         </filter>
       </defs>
 
-      <rect width="400" height="400" fill={bg} rx={isFilled || projection ? 0 : 16} />
+      <rect
+        x={VIEWBOX_MIN}
+        y={VIEWBOX_MIN}
+        width={VIEWBOX_SIZE}
+        height={VIEWBOX_SIZE}
+        fill={bg}
+        rx={isFilled || projection ? 0 : 16}
+      />
 
       {ringBands.map((band) => (
         <circle key={band.r} cx={CX} cy={CY} r={band.r} fill={band.fill} />
@@ -124,14 +136,22 @@ export default function PowerWheel({
       ))}
 
       {Array.from({ length: AXIS_COUNT }).map((_, i) => {
-        const outer = pointAt(i, RING_RADII[2] + 4);
+        const axisId = axes[i]?.id;
+        const sel = axisId != null ? selections[axisId] : undefined;
+        const isAnswered = sel != null && sel !== "";
         const isActive = highlightAxisIndex === i;
-        const isAnswered = selections[axes[i]?.id] != null;
+
+        if (isActive && !isAnswered) {
+          return null;
+        }
+
+        const inner = pointAt(i, RING_RADII[0]);
+        const outer = pointAt(i, AXIS_OUTER);
         return (
           <line
             key={`axis-${i}`}
-            x1={CX}
-            y1={CY}
+            x1={inner.x}
+            y1={inner.y}
             x2={outer.x}
             y2={outer.y}
             stroke={isActive ? axisHighlight : isAnswered ? "rgba(29, 158, 117, 0.35)" : axisStroke}
@@ -162,10 +182,32 @@ export default function PowerWheel({
       )}
 
       {axes.map((axis, i) => {
-        const ring = positionToRing(selections[axis.id]);
-        if (ring == null) return null;
-        const pt = pointAt(i, RING_RADII[ring]);
+        const selection = selections[axis.id];
+        if (selection == null || selection === "") return null;
+
+        const isUnknown = selection === "unknown";
+        const ring = positionToRing(selection);
+        const pt = pointAt(i, isUnknown ? RING_RADII[1] : RING_RADII[ring]);
         const isActive = highlightAxisIndex === i;
+
+        if (isUnknown) {
+          return (
+            <g key={`dot-${axis.id}`}>
+              <circle
+                cx={pt.x}
+                cy={pt.y}
+                r={7}
+                fill="none"
+                stroke={config.colors.textMuted}
+                strokeWidth={2}
+                strokeDasharray="3 2"
+              />
+              <title>niet ingeschat</title>
+            </g>
+          );
+        }
+
+        if (ring == null) return null;
 
         if (isFilled) {
           return (
@@ -201,20 +243,25 @@ export default function PowerWheel({
       {axes.map((axis, i) => {
         const pt = pointAt(i, LABEL_RADIUS);
         const cos = Math.cos(axisAngle(i));
-        const anchor = cos > 0.15 ? "start" : cos < -0.15 ? "end" : "middle";
+        const sin = Math.sin(axisAngle(i));
+        const anchor = cos > 0.2 ? "start" : cos < -0.2 ? "end" : "middle";
         const isActive = highlightAxisIndex === i;
         const isAnswered = selections[axis.id] != null;
+        const labelOffset = 4;
+        const lx = pt.x + (anchor === "start" ? labelOffset : anchor === "end" ? -labelOffset : 0);
+        const ly = pt.y + (sin < -0.85 ? -4 : sin > 0.85 ? 4 : 0);
+
         return (
           <text
             key={`label-${axis.id}`}
-            x={pt.x}
-            y={pt.y}
+            x={lx}
+            y={ly}
             textAnchor={anchor}
             dominantBaseline="middle"
             fill={isActive ? labelColor : isAnswered ? labelColor : labelMuted}
             style={{
               fontFamily: config.fonts.ui,
-              fontSize: isActive ? 12 : 10.5,
+              fontSize: isActive ? 10.5 : 9.5,
               fontWeight: isActive ? 700 : isAnswered ? 600 : 500,
             }}
           >
@@ -226,7 +273,7 @@ export default function PowerWheel({
       <circle
         cx={CX}
         cy={CY}
-        r={6}
+        r={5}
         fill={projection ? config.colors.projectionStroke : config.colors.dotStrong}
         stroke="#FFFFFF"
         strokeWidth={2}
@@ -236,10 +283,11 @@ export default function PowerWheel({
         <>
           <text
             x={CX}
-            y={CY - 10}
+            y={CY - 18}
             textAnchor="middle"
+            dominantBaseline="middle"
             fill={config.colors.dotStrong}
-            style={{ fontFamily: config.fonts.ui, fontSize: 9, fontWeight: 700, letterSpacing: "0.08em" }}
+            style={{ fontFamily: config.fonts.ui, fontSize: 8, fontWeight: 700, letterSpacing: "0.08em" }}
           >
             MACHT
           </text>
@@ -267,4 +315,4 @@ export default function PowerWheel({
   );
 }
 
-export { AXIS_COUNT, POSITION_RING, RING_RADII, POSITIONS };
+export { AXIS_COUNT, POSITION_RING, RING_RADII, POSITIONS, VIEWBOX_SIZE };
