@@ -2,8 +2,11 @@ import { useRef, useState, useEffect } from "react";
 import IntroScreen from "../components/IntroScreen.jsx";
 import AxisSelector from "../components/AxisSelector.jsx";
 import PowerWheel from "../components/PowerWheel.jsx";
+import IndividueleAnalyse from "../components/IndividueleAnalyse.jsx";
 import { AXES_SELF } from "../data/axesSelf.js";
+import { BRONNEN_APA } from "../data/adviesTeksten.js";
 import { config, getFraming } from "../config.js";
+import { printIndividuPdf } from "../utils/individuPrint.js";
 
 export default function SelfReflection() {
   const framing = getFraming();
@@ -125,7 +128,6 @@ export default function SelfReflection() {
       <div style={styles.page}>
         <div style={styles.resultWrap}>
           <h1 style={styles.resultTitle}>{copy.resultTitle}</h1>
-          <p style={styles.resultText}>{copy.resultText}</p>
 
           <div ref={wheelRef} style={styles.wheelBox}>
             <PowerWheel
@@ -137,14 +139,34 @@ export default function SelfReflection() {
             />
           </div>
 
+          <IndividueleAnalyse selections={selections} axes={AXES_SELF} />
+
           <div style={styles.actions}>
-            <button type="button" onClick={downloadWheel} style={styles.primaryBtn}>
+            <button
+              type="button"
+              onClick={() => printIndividuPdf({ selections, axes: AXES_SELF })}
+              style={styles.primaryBtn}
+            >
+              {copy.downloadPdfLabel}
+            </button>
+            <button type="button" onClick={downloadWheel} style={styles.secondaryBtn}>
               {copy.downloadLabel}
             </button>
             <button type="button" onClick={restart} style={styles.secondaryBtn}>
               {copy.restartLabel}
             </button>
           </div>
+
+          <section aria-label="Bronnen" style={styles.sourcesSection}>
+            <h2 style={styles.sourcesTitle}>Bronnen</h2>
+            <ul style={styles.sources}>
+              {BRONNEN_APA.map((bron) => (
+                <li key={bron} style={styles.sourceItem}>
+                  {bron}
+                </li>
+              ))}
+            </ul>
+          </section>
         </div>
       </div>
     );
@@ -257,9 +279,9 @@ const styles = {
     cursor: "pointer",
   },
   resultWrap: {
-    maxWidth: 680,
+    maxWidth: 760,
     margin: "0 auto",
-    padding: "24px 12px 48px",
+    padding: "28px 20px 56px",
     textAlign: "center",
   },
   resultTitle: {
@@ -267,13 +289,6 @@ const styles = {
     fontSize: "1.75rem",
     fontWeight: 600,
     margin: "0 0 12px",
-  },
-  resultText: {
-    fontFamily: config.fonts.voice,
-    fontSize: "1rem",
-    color: config.colors.textMuted,
-    lineHeight: 1.6,
-    margin: "0 0 28px",
   },
   wheelBox: {
     marginBottom: 28,
@@ -283,8 +298,38 @@ const styles = {
   },
   actions: {
     display: "flex",
-    flexDirection: "column",
+    flexWrap: "wrap",
     gap: 12,
     alignItems: "center",
+    justifyContent: "center",
+    marginTop: 24,
+    marginBottom: 32,
+  },
+  sourcesSection: {
+    textAlign: "left",
+    marginTop: 16,
+  },
+  sourcesTitle: {
+    fontFamily: config.fonts.ui,
+    fontSize: "0.75rem",
+    fontWeight: 700,
+    letterSpacing: "0.05em",
+    textTransform: "uppercase",
+    color: config.colors.textMuted,
+    margin: "0 0 8px",
+  },
+  sources: {
+    listStyle: "none",
+    padding: 0,
+    margin: 0,
+  },
+  sourceItem: {
+    fontFamily: config.fonts.ui,
+    fontSize: "0.75rem",
+    color: config.colors.textMuted,
+    lineHeight: 1.45,
+    marginBottom: 8,
+    paddingLeft: "1.5em",
+    textIndent: "-1.5em",
   },
 };

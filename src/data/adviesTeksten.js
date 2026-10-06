@@ -1,10 +1,14 @@
 import { BRONNEN_INCLUSIE } from "./inclusieVoordelen.js";
 
 const BRONNEN_KERN = [
+  "Collins, P. H. (2000). Black feminist thought: Knowledge, consciousness, and the politics of empowerment (2nd ed.). Routledge.",
   "Crenshaw, K. (1989). Demarginalizing the intersection of race and sex: A Black feminist critique of antidiscrimination doctrine, feminist theory and antiracist politics. University of Chicago Legal Forum, 1989(1), 139–167.",
+  "Davidai, S., & Gilovich, T. (2016). The headwinds/tailwinds asymmetry: An availability bias in assessments of barriers and blessings. Journal of Personality and Social Psychology, 111(6), 835–851. https://doi.org/10.1037/pspa0000066",
+  "Elder, G. H., Jr. (1998). The life course as developmental theory. Child Development, 69(1), 1–12. https://doi.org/10.1111/j.1467-8624.1998.tb06128.x",
   "Ely, R. J., & Thomas, D. A. (2001). Cultural diversity at work: The effects of diversity perspectives on work group processes and outcomes. Administrative Science Quarterly, 46(2), 229–273. https://doi.org/10.2307/2667087",
   "Kanter, R. M. (1977). Men and women of the corporation. Basic Books.",
   "Luyendijk, J. (2022). De zeven vinkjes: Hoe mannen zoals ik de samenleving domineren. Pluim.",
+  "McAdams, D. P., & McLean, K. C. (2013). Narrative identity. Current Directions in Psychological Science, 22(3), 233–238. https://doi.org/10.1177/0963721413475622",
   "McIntosh, P. (1989). White privilege: Unpacking the invisible knapsack. Peace and Freedom, July/August, 10–12.",
   "Nishii, L. H. (2013). The benefits of climate for inclusion for gender-diverse groups. Academy of Management Journal, 56(6), 1754–1774. https://doi.org/10.5465/amj.2009.0823",
   "Page, S. E. (2007). The difference: How the power of diversity creates better groups, firms, schools, and societies. Princeton University Press.",

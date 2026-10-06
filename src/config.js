@@ -69,6 +69,7 @@ export const config = {
         "Dit kruispunt laat zien waar jij op de elf assen staat. Gebruik het als startpunt " +
         "voor reflectie — niet als oordeel over jezelf of anderen.",
       downloadLabel: "Download als afbeelding",
+      downloadPdfLabel: "Download als PDF",
       restartLabel: "Opnieuw beginnen",
       startLabel: "Begin reflectie",
       nextLabel: "Volgende",
@@ -113,6 +114,7 @@ export const config = {
         "Dit kruispunt laat zien waar jij op de elf assen staat. Gebruik het als startpunt " +
         "voor reflectie — niet als oordeel over jezelf of anderen.",
       downloadLabel: "Download als afbeelding",
+      downloadPdfLabel: "Download als PDF",
       restartLabel: "Opnieuw beginnen",
       startLabel: "Begin scan",
       nextLabel: "Volgende",
