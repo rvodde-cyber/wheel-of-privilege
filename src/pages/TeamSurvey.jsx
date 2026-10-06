@@ -210,6 +210,8 @@ export default function TeamSurvey() {
               layers={tweeLenzen ? lensLayers(selections) : undefined}
               axes={AXES_TEAM}
               ariaLabel="Organisatie-indruk op het machtskruising"
+              legendDotLabel="Indruk organisatie"
+              animateEntrance
             />
           </div>
 

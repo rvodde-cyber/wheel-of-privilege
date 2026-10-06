@@ -90,6 +90,9 @@ export function printOrganisatiePdf({ selections, axes, orgCode = "", lensMode =
       layers: tweeLenzen ? lensLayers(selections) : undefined,
       axes,
       ariaLabel: "Organisatie-indruk op het machtskruising",
+      legendDotLabel: "Indruk organisatie",
+      forPrint: true,
+      showLegend: true,
     })
   );
 

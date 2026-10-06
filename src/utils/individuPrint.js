@@ -62,6 +62,8 @@ export function printIndividuPdf({ selections, axes }) {
       selections,
       axes,
       ariaLabel: "Jouw Machtskruising",
+      forPrint: true,
+      showLegend: true,
     })
   );
 

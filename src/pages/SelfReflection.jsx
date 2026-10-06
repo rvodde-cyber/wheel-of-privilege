@@ -136,6 +136,7 @@ export default function SelfReflection() {
               selections={selections}
               axes={AXES_SELF}
               ariaLabel="Jouw Machtskruising"
+              animateEntrance
             />
           </div>
 
