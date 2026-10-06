@@ -83,7 +83,7 @@ export const AS_DUIDING = {
     center:
       "Misschien hoef je zelden na te denken over papieren, nationaliteit of waar je 'eigenlijk' thuishoort.",
     periphery:
-      "Het kan zijn dat migratieachtergrond of status vragen oproept die anderen niet krijgen, ook als je al lang hier bent.",
+      "Het kan zijn dat je migratieachtergrond of je status vragen oproept die anderen niet krijgen, ook als je hier geboren bent of er al lang woont.",
   },
 };
 
