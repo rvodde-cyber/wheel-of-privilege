@@ -36,9 +36,14 @@ export default function Landing() {
               vertrekpunt, niet als oordeel.
             </p>
             <StartActions />
-            <Link to="/uitleg" style={styles.textLink}>
-              Hoe het werkt
-            </Link>
+            <div style={styles.textLinks}>
+              <Link to="/uitleg" style={styles.textLink}>
+                Hoe het werkt
+              </Link>
+              <Link to="/onderbouwing" style={styles.textLink}>
+                Lees de onderbouwing
+              </Link>
+            </div>
             <ul style={styles.features}>
               {KENMERKEN.map((item) => (
                 <li key={item} style={styles.feature}>
@@ -62,7 +67,19 @@ export default function Landing() {
             </div>
           </div>
         </div>
+
+        <section style={styles.onderbouwingSect} aria-labelledby="landing-onderbouwing">
+          <h2 id="landing-onderbouwing" style={styles.sectTitle}>Onderbouwing</h2>
+          <p style={styles.sectText}>
+            Wetenschappelijke verantwoording bij de organisatiescan: diversiteit, inclusie en wat
+            de literatuur wel en niet laat zien.
+          </p>
+          <Link to="/onderbouwing" style={styles.textLink}>Lees de onderbouwing</Link>
+        </section>
       </main>
+      <footer style={styles.footer}>
+        <Link to="/onderbouwing" style={styles.footerLink}>Lees de onderbouwing</Link>
+      </footer>
     </div>
   );
 }
@@ -131,6 +148,12 @@ const styles = {
     background: config.colors.dotStrong,
     flexShrink: 0,
   },
+  textLinks: {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: "12px 20px",
+    margin: "4px 0 0",
+  },
   textLink: {
     fontFamily: config.fonts.ui,
     fontSize: "0.975rem",
@@ -153,5 +176,38 @@ const styles = {
     color: config.colors.textMuted,
     textAlign: "center",
     margin: "4px 0 8px",
+  },
+  onderbouwingSect: {
+    marginTop: 48,
+    paddingTop: 32,
+    borderTop: `1px solid ${config.colors.border}`,
+    maxWidth: 520,
+  },
+  sectTitle: {
+    fontFamily: config.fonts.voice,
+    fontSize: "1.35rem",
+    fontWeight: 600,
+    margin: "0 0 10px",
+  },
+  sectText: {
+    fontFamily: config.fonts.ui,
+    fontSize: "1rem",
+    lineHeight: 1.55,
+    color: config.colors.textMuted,
+    margin: "0 0 12px",
+  },
+  footer: {
+    maxWidth: 1120,
+    margin: "0 auto",
+    padding: "24px 24px 40px",
+    borderTop: `1px solid ${config.colors.border}`,
+  },
+  footerLink: {
+    fontFamily: config.fonts.ui,
+    fontSize: "0.875rem",
+    fontWeight: 600,
+    color: config.colors.dotStrong,
+    textDecoration: "underline",
+    textUnderlineOffset: 3,
   },
 };

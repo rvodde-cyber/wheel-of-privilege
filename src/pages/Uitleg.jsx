@@ -1,6 +1,8 @@
+import { Link } from "react-router-dom";
 import PowerWheel from "../components/PowerWheel.jsx";
 import AchtergrondDocumentLink from "../components/AchtergrondDocumentLink.jsx";
 import SiteNav, { StartActions } from "../components/SiteNav.jsx";
+import { printVerantwoordingPdf } from "../utils/printVerantwoordingPdf.js";
 import { AXES_SELF } from "../data/axesSelf.js";
 import { AXES_TEAM, LENZEN, formatTeamQuestion } from "../data/axesTeam.js";
 import { BRONNEN_APA } from "../data/adviesTeksten.js";
@@ -219,6 +221,17 @@ export default function Uitleg() {
           </p>
         </Row>
 
+        <Row label="Onderbouwing">
+          <p style={styles.prose}>
+            <Link to="/onderbouwing" style={styles.inlineLink}>
+              Uitgebreide verantwoording over diversiteit en inclusie
+            </Link>
+          </p>
+          <button type="button" onClick={() => printVerantwoordingPdf()} style={styles.pdfBtn}>
+            Download als PDF
+          </button>
+        </Row>
+
         <Row label="Bronnen">
           <AchtergrondDocumentLink />
           <ul style={styles.sources}>
@@ -400,5 +413,23 @@ const styles = {
   closing: {
     padding: "28px 0 0",
     borderTop: `1px solid ${config.colors.border}`,
+  },
+  inlineLink: {
+    color: config.colors.dotStrong,
+    fontWeight: 600,
+    textDecoration: "underline",
+    textUnderlineOffset: 3,
+  },
+  pdfBtn: {
+    marginTop: 12,
+    fontFamily: config.fonts.ui,
+    fontSize: "0.9375rem",
+    fontWeight: 600,
+    color: config.colors.buttonText,
+    background: config.colors.buttonBg,
+    border: "none",
+    borderRadius: 999,
+    padding: "10px 18px",
+    cursor: "pointer",
   },
 };

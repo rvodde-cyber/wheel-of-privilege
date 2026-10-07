@@ -318,6 +318,12 @@ export default function TeamSurvey() {
             </Link>
           </div>
 
+          <p style={styles.verantwoordingLinkWrap}>
+            <Link to="/onderbouwing" style={styles.textLink}>
+              Lees en download de volledige verantwoording
+            </Link>
+          </p>
+
           <InclusieLoontSection />
           <AchtergrondDocumentLink />
 
@@ -617,6 +623,10 @@ const styles = {
     gap: 12,
     alignItems: "center",
     marginTop: 8,
+  },
+  verantwoordingLinkWrap: {
+    margin: "24px 0 8px",
+    fontFamily: config.fonts.ui,
   },
   textLink: {
     fontFamily: config.fonts.ui,

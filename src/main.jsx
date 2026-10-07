@@ -5,6 +5,7 @@ import Landing from "./pages/Landing.jsx";
 import Uitleg from "./pages/Uitleg.jsx";
 import SelfReflection from "./pages/SelfReflection.jsx";
 import TeamSurvey from "./pages/TeamSurvey.jsx";
+import Onderbouwing from "./pages/Onderbouwing.jsx";
 import ProjectionScreen from "./pages/ProjectionScreen.jsx";
 import { config } from "./config.js";
 
@@ -53,6 +54,10 @@ const globalStyles = `
     .wop-start-actions { flex-direction: row; align-items: stretch; }
     .wop-start-btn { flex: 1 1 0; width: auto; min-width: 0; }
   }
+  .wop-table-scroll { max-width: 100%; }
+  @media (max-width: 360px) {
+    .wop-onderbouwing-main { padding-left: 16px; padding-right: 16px; }
+  }
   @media (min-width: 880px) {
     .wop-landing-grid { flex-direction: row; align-items: center; gap: 56px; }
     .wop-landing-copy { flex: 1.05; min-width: 0; }
@@ -78,6 +83,7 @@ createRoot(document.getElementById("root")).render(
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/uitleg" element={<Uitleg />} />
+        <Route path="/onderbouwing" element={<Onderbouwing />} />
         <Route path="/individu" element={<SelfReflection />} />
         <Route path="/team/:orgCode" element={<TeamSurvey />} />
         <Route path="/scan/:orgCode" element={<ProjectionScreen />} />
