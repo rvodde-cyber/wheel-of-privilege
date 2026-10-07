@@ -9,10 +9,9 @@ const blockStyles = {
     color: config.colors.text,
   },
   h2: {
-    fontFamily: config.fonts.ui,
+    fontFamily: config.fonts.voice,
     fontSize: "0.9375rem",
-    fontWeight: 700,
-    letterSpacing: "0.03em",
+    fontWeight: 600,
     margin: "1.5em 0 0.5em",
     color: config.colors.text,
   },
@@ -55,7 +54,7 @@ const blockStyles = {
   },
   th: {
     border: `1px solid ${config.colors.border}`,
-    padding: "10px 12px",
+    padding: "10px",
     textAlign: "left",
     verticalAlign: "top",
     background: config.colors.selectedBg,
@@ -63,7 +62,7 @@ const blockStyles = {
   },
   td: {
     border: `1px solid ${config.colors.border}`,
-    padding: "10px 12px",
+    padding: "10px",
     textAlign: "left",
     verticalAlign: "top",
   },

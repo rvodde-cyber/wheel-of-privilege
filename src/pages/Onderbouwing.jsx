@@ -3,21 +3,45 @@ import { Link, useSearchParams } from "react-router-dom";
 import SiteNav from "../components/SiteNav.jsx";
 import VerantwoordingBlokken from "../components/VerantwoordingBlokken.jsx";
 import { bronnenLijst } from "../data/bronnenVerantwoording.js";
-import { VERSIES } from "../data/verantwoordingVersies.js";
+import {
+  VERSIES,
+  VERSIE_LABELS,
+  andereVersie,
+  kiesVersie,
+} from "../data/verantwoordingVersies.js";
 import { printVerantwoordingPdf } from "../utils/printVerantwoordingPdf.js";
 import { sectieAnchorId } from "../utils/verantwoordingIds.js";
 import { config } from "../config.js";
 
-function resolveVersie(raw) {
-  if (raw && VERSIES[raw]) return raw;
-  return "wetenschappelijk";
+const VERSIE_KEYS = Object.keys(VERSIES);
+
+function VersieSegment({ versie, onChange }) {
+  return (
+    <div style={segmentStyles.wrap} role="group" aria-label="Versie van de onderbouwing">
+      {VERSIE_KEYS.map((key) => {
+        const active = key === versie;
+        return (
+          <button
+            key={key}
+            type="button"
+            aria-pressed={active}
+            onClick={() => onChange(key)}
+            style={segmentStyles.btn(active)}
+          >
+            {VERSIE_LABELS[key]}
+          </button>
+        );
+      })}
+    </div>
+  );
 }
 
 export default function Onderbouwing() {
-  const [searchParams] = useSearchParams();
-  const versie = resolveVersie(searchParams.get("versie"));
+  const [searchParams, setSearchParams] = useSearchParams();
+  const versie = kiesVersie(searchParams.get("versie"));
   const doc = VERSIES[versie];
   const bronnen = useMemo(() => bronnenLijst(doc.bronnenIds), [doc.bronnenIds]);
+  const andere = andereVersie(versie);
 
   useEffect(() => {
     const previous = document.title;
@@ -27,11 +51,25 @@ export default function Onderbouwing() {
     };
   }, [doc.titel]);
 
+  function setVersie(next) {
+    if (next === versie) return;
+    const params = new URLSearchParams(searchParams);
+    if (next === kiesVersie()) {
+      params.delete("versie");
+    } else {
+      params.set("versie", next);
+    }
+    setSearchParams(params, { replace: true });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
   return (
     <div style={styles.page}>
       <SiteNav />
       <main className="wop-onderbouwing-main" style={styles.main}>
         <Link to="/" style={styles.backLink}>← Terug naar start</Link>
+
+        <VersieSegment versie={versie} onChange={setVersie} />
 
         <p style={styles.eyebrow}>{doc.eyebrow}</p>
         <h1 style={styles.title}>{doc.titel}</h1>
@@ -39,17 +77,36 @@ export default function Onderbouwing() {
 
         <div style={styles.actionsTop}>
           <button type="button" onClick={() => printVerantwoordingPdf(versie)} style={styles.primaryBtn}>
-            Download als PDF
+            Download deze versie als PDF
+          </button>
+          <button
+            type="button"
+            onClick={() => printVerantwoordingPdf(andere)}
+            style={styles.textBtn}
+          >
+            Download ook de andere versie als PDF
           </button>
           <p style={styles.privacy}>
             De PDF wordt in je browser gemaakt. Er wordt niets verzonden of opgeslagen.
           </p>
         </div>
 
-        <div style={styles.kader}>
-          <p style={styles.kaderTitel}>Samenvatting</p>
-          <p style={styles.kaderText}>{doc.samenvatting}</p>
-        </div>
+        {doc.samenvatting ? (
+          <div style={styles.kader}>
+            <p style={styles.kaderTitel}>Samenvatting</p>
+            <p style={styles.kaderText}>{doc.samenvatting}</p>
+          </div>
+        ) : null}
+        {doc.kader ? (
+          <div style={styles.kader}>
+            <p style={styles.kaderTitel}>{doc.kader.titel}</p>
+            <ul style={styles.kaderList}>
+              {doc.kader.regels.map((regel) => (
+                <li key={regel} style={styles.kaderListItem}>{regel}</li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
 
         <nav aria-label="Inhoudsopgave" style={styles.toc}>
           <h2 style={styles.tocTitle}>Inhoud</h2>
@@ -89,7 +146,14 @@ export default function Onderbouwing() {
 
         <div style={styles.actionsBottom}>
           <button type="button" onClick={() => printVerantwoordingPdf(versie)} style={styles.primaryBtn}>
-            Download als PDF
+            Download deze versie als PDF
+          </button>
+          <button
+            type="button"
+            onClick={() => printVerantwoordingPdf(andere)}
+            style={styles.textBtn}
+          >
+            Download ook de andere versie als PDF
           </button>
           <p style={styles.privacy}>
             De PDF wordt in je browser gemaakt. Er wordt niets verzonden of opgeslagen.
@@ -99,6 +163,29 @@ export default function Onderbouwing() {
     </div>
   );
 }
+
+const segmentStyles = {
+  wrap: {
+    display: "inline-flex",
+    padding: 3,
+    borderRadius: 999,
+    border: `1px solid ${config.colors.border}`,
+    background: config.colors.surface,
+    marginBottom: 20,
+  },
+  btn: (active) => ({
+    fontFamily: config.fonts.ui,
+    fontSize: "0.875rem",
+    fontWeight: 600,
+    border: "none",
+    borderRadius: 999,
+    padding: "8px 14px",
+    cursor: "pointer",
+    color: active ? config.colors.buttonText : config.colors.text,
+    background: active ? config.colors.buttonBg : "transparent",
+    outlineOffset: 2,
+  }),
+};
 
 const styles = {
   page: {
@@ -146,6 +233,10 @@ const styles = {
   },
   actionsTop: {
     margin: "0 0 24px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-start",
+    gap: 10,
   },
   actionsBottom: {
     margin: "36px 0 0",
@@ -164,6 +255,18 @@ const styles = {
     borderRadius: 999,
     padding: "12px 20px",
     cursor: "pointer",
+  },
+  textBtn: {
+    fontFamily: config.fonts.ui,
+    fontSize: "0.9375rem",
+    fontWeight: 600,
+    color: config.colors.dotStrong,
+    background: "transparent",
+    border: "none",
+    padding: "4px 0",
+    cursor: "pointer",
+    textDecoration: "underline",
+    textUnderlineOffset: 3,
   },
   privacy: {
     fontFamily: config.fonts.ui,
@@ -195,18 +298,25 @@ const styles = {
     lineHeight: 1.6,
     margin: 0,
   },
+  kaderList: {
+    fontFamily: config.fonts.voice,
+    fontSize: "1.0625rem",
+    lineHeight: 1.6,
+    margin: 0,
+    paddingLeft: "1.25em",
+  },
+  kaderListItem: {
+    marginBottom: "0.5em",
+  },
   toc: {
     margin: "0 0 32px",
     padding: "0 0 24px",
     borderBottom: `1px solid ${config.colors.border}`,
   },
   tocTitle: {
-    fontFamily: config.fonts.ui,
-    fontSize: "0.8125rem",
-    fontWeight: 700,
-    letterSpacing: "0.06em",
-    textTransform: "uppercase",
-    color: config.colors.textMuted,
+    fontFamily: config.fonts.voice,
+    fontSize: "1rem",
+    fontWeight: 600,
     margin: "0 0 10px",
   },
   tocList: {

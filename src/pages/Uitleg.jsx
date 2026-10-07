@@ -227,9 +227,22 @@ export default function Uitleg() {
               Uitgebreide verantwoording over diversiteit en inclusie
             </Link>
           </p>
-          <button type="button" onClick={() => printVerantwoordingPdf()} style={styles.pdfBtn}>
-            Download als PDF
-          </button>
+          <div style={styles.pdfBtnRow}>
+            <button
+              type="button"
+              onClick={() => printVerantwoordingPdf("populair")}
+              style={styles.pdfBtn}
+            >
+              Download voor organisaties (PDF)
+            </button>
+            <button
+              type="button"
+              onClick={() => printVerantwoordingPdf("wetenschappelijk")}
+              style={styles.pdfBtnSecondary}
+            >
+              Download wetenschappelijke versie (PDF)
+            </button>
+          </div>
         </Row>
 
         <Row label="Bronnen">
@@ -420,14 +433,31 @@ const styles = {
     textDecoration: "underline",
     textUnderlineOffset: 3,
   },
-  pdfBtn: {
+  pdfBtnRow: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 10,
     marginTop: 12,
+    alignItems: "flex-start",
+  },
+  pdfBtn: {
     fontFamily: config.fonts.ui,
     fontSize: "0.9375rem",
     fontWeight: 600,
     color: config.colors.buttonText,
     background: config.colors.buttonBg,
     border: "none",
+    borderRadius: 999,
+    padding: "10px 18px",
+    cursor: "pointer",
+  },
+  pdfBtnSecondary: {
+    fontFamily: config.fonts.ui,
+    fontSize: "0.9375rem",
+    fontWeight: 600,
+    color: config.colors.dotStrong,
+    background: "transparent",
+    border: `1px solid ${config.colors.border}`,
     borderRadius: 999,
     padding: "10px 18px",
     cursor: "pointer",

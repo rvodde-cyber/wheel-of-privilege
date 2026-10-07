@@ -1,5 +1,5 @@
 import { bronnenLijst } from "../data/bronnenVerantwoording.js";
-import { VERSIES } from "../data/verantwoordingVersies.js";
+import { VERSIES, kiesVersie } from "../data/verantwoordingVersies.js";
 import { config } from "../config.js";
 
 function escapeHtml(text) {
@@ -44,11 +44,36 @@ function blokkenHtml(blokken) {
     .join("");
 }
 
+function kaderHtml(doc) {
+  if (doc.samenvatting) {
+    return `<div class="kader">
+      <p class="kader-titel">Samenvatting</p>
+      <p>${escapeHtml(doc.samenvatting)}</p>
+    </div>`;
+  }
+  if (doc.kader) {
+    const regels = doc.kader.regels
+      .map((regel) => `<li>${escapeHtml(regel)}</li>`)
+      .join("");
+    return `<div class="kader">
+      <p class="kader-titel">${escapeHtml(doc.kader.titel)}</p>
+      <ul class="kader-lijst">${regels}</ul>
+    </div>`;
+  }
+  return "";
+}
+
+const DOC_TITLES = {
+  populair: "Machtskruising - Een team dat meer ziet",
+  wetenschappelijk: "Machtskruising - Wetenschappelijke verantwoording",
+};
+
 /**
  * @param {string} [versie]
  */
-export function printVerantwoordingPdf(versie = "wetenschappelijk") {
-  const doc = VERSIES[versie] ?? VERSIES.wetenschappelijk;
+export function printVerantwoordingPdf(versie) {
+  const key = kiesVersie(versie);
+  const doc = VERSIES[key];
   const datum = new Date().toLocaleDateString("nl-NL", {
     day: "numeric",
     month: "long",
@@ -67,7 +92,7 @@ export function printVerantwoordingPdf(versie = "wetenschappelijk") {
     )
     .join("");
 
-  const docTitle = "Machtskruising - Wetenschappelijke verantwoording";
+  const docTitle = DOC_TITLES[key] ?? DOC_TITLES.wetenschappelijk;
 
   const html = `<!DOCTYPE html>
 <html lang="nl">
@@ -116,6 +141,8 @@ export function printVerantwoordingPdf(versie = "wetenschappelijk") {
       margin: 0 0 8px;
       color: ${config.colors.dotStrong};
     }
+    .kader-lijst { margin: 0; padding-left: 1.25em; }
+    .kader-lijst li { margin: 0 0 0.5em; }
     h2 {
       font-family: ${config.fonts.voice};
       font-size: 1.12rem;
@@ -186,10 +213,7 @@ export function printVerantwoordingPdf(versie = "wetenschappelijk") {
   <p class="kicker">${escapeHtml(doc.eyebrow)} · ${escapeHtml(datum)}</p>
   <h1>${escapeHtml(doc.titel)}</h1>
   <p class="subtitle">${escapeHtml(doc.ondertitel)}</p>
-  <div class="kader">
-    <p class="kader-titel">Samenvatting</p>
-    <p>${escapeHtml(doc.samenvatting)}</p>
-  </div>
+  ${kaderHtml(doc)}
   ${sectiesHtml}
   <h2>Bronnen</h2>
   <ul class="bronnen">${bronnen}</ul>
