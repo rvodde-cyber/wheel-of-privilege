@@ -134,7 +134,8 @@ export const AXES_TEAM = [
     shortLabel: "Taal",
     titel: "Taal",
     vraagdeel: "qua moedertaal",
-    hint: "Denk aan de taal in overleg en op de gang.",
+    hint:
+      "Gaat om de moedertaal. Een hoorbaar accent kan ook meetellen in hoe collega's gezien worden, ook als ze de taal goed spreken.",
     instructie:
       "Denk aan: hoe worden collega's in jouw organisatie meestal gezien en behandeld?",
     opties: {

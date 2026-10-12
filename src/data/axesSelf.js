@@ -107,13 +107,12 @@ export const AXES_SELF = [
     id: "taal",
     label: "Taal (moedertaal)",
     shortLabel: "Taal",
-    hint: "Een hoorbaar accent kan meetellen, ook als je de taal goed spreekt.",
+    hint:
+      "Gaat om je moedertaal. Een hoorbaar accent kan ook meetellen in hoe je gezien wordt, ook als je de taal goed spreekt.",
     instructie: "Denk aan: hoe word je meestal gezien en behandeld?",
     positions: {
-      center:
-        "Nederlands is mijn moedertaal en ik spreek deze vloeiend zonder dat mijn manier van spreken opvalt.",
-      middle:
-        "Ik spreek Nederlands vloeiend, maar het is niet mijn moedertaal of mijn accent valt op.",
+      center: "Nederlands is mijn moedertaal.",
+      middle: "Ik spreek Nederlands vloeiend, maar het is niet mijn moedertaal.",
       periphery:
         "Nederlands is niet mijn moedertaal en ik moet regelmatig extra moeite doen om mee te komen of begrepen te worden.",
     },
@@ -159,7 +158,7 @@ export const AXES_SELF = [
       center:
         "Mijn paspoort opent veel deuren: ik kan vrij reizen, wonen en werken zonder visum of verblijfsvergunning.",
       middle:
-        "Ik heb een sterk paspoort, maar kreeg het via migratie of naturalisatie (of mijn ouders deden dat), en ik merk soms extra drempels.",
+        "Ik heb een sterk paspoort, maar merk soms extra drempels (bijvoorbeeld bij visa, grenscontroles of naturalisatie).",
       periphery:
         "Mijn paspoort of verblijfsstatus beperkt wat ik kan: reizen, wonen of werken is niet vanzelfsprekend of niet zeker.",
     },
