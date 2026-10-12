@@ -59,30 +59,28 @@ export const AXES_TEAM = [
     shortLabel: "Ouders",
     titel: "Ouderlijke achtergrond",
     vraagdeel: "qua achtergrond van hun ouders",
-    hint: "Denk aan opleiding en welstand van de ouders, voor zover bekend.",
+    hint: "Denk aan de hoogste opleiding van de ouders, voor zover bekend.",
     instructie: "Kies waar volgens jou de grootste groep collega's zit.",
     opties: {
-      centrum:
-        "De meeste collega's hebben minstens één ouder met hoger onderwijs of een stevige maatschappelijke positie.",
+      centrum: "De meeste collega's hebben minstens één ouder met hoger onderwijs.",
       periferie:
-        "De meeste collega's hebben ouders met weinig formele opleiding of beperkte financiële middelen.",
+        "De meeste collega's hebben ouders met vmbo, mbo 1-2, praktijkonderwijs of geen diploma.",
     },
   },
   {
     id: "etniciteit",
-    label: "Herkomst",
-    shortLabel: "Herkomst",
-    titel: "Herkomst en paspoort",
-    vraagdeel: "qua herkomst en paspoort",
+    label: "Etniciteit",
+    shortLabel: "Etniciteit",
+    titel: "Etniciteit / huidskleur",
+    vraagdeel: "qua etniciteit en huidskleur",
     hint:
-      "Kijk zowel naar de werkvloer als naar de top. Machtsverschillen tussen witte Nederlanders onderling (regio, klasse, opleiding, ouders) komen terug bij andere onderwerpen.",
+      "Kijk zowel naar de werkvloer als naar de top. Het gaat om hoe collega's gelezen worden, niet om paspoort (zie Paspoort en verblijfsstatus). Machtsverschillen tussen witte Nederlanders onderling komen terug bij klasse, ouders, opleiding en taal.",
     instructie:
       "Denk aan: hoe worden collega's in jouw organisatie meestal gezien en behandeld?",
     opties: {
-      centrum:
-        "De meeste collega's hebben een Nederlands paspoort vanaf geboorte, ouders in Nederland geboren, en worden vanzelf als 'gewoon Nederlands' gezien.",
+      centrum: "De meeste collega's worden vanzelf als 'gewoon Nederlands' gezien.",
       periferie:
-        "De meeste collega's worden vaak als 'anders' gezien, of hun paspoort of verblijfsstatus beperkt wat zij kunnen.",
+        "De meeste collega's worden vaak als 'anders' gezien vanwege hun uiterlijk of huidskleur.",
     },
   },
   {
@@ -91,13 +89,13 @@ export const AXES_TEAM = [
     shortLabel: "Gender",
     titel: "Gender",
     vraagdeel: "qua gender",
-    hint: "Kijk zowel naar de werkvloer als naar de top; het beeld kan verschillen.",
+    hint:
+      "Kijk zowel naar de werkvloer als naar de top; het beeld kan verschillen. Voorbeelden van anders behandeld worden: als vrouw, non-binair of transgender.",
     instructie:
       "Denk aan: hoe worden collega's in jouw organisatie meestal gezien en behandeld?",
     opties: {
       centrum: "Mannen vormen de grootste groep, zeker in leidinggevende functies.",
-      periferie:
-        "Vrouwen, non-binaire of transgender collega's vormen de grootste groep, ook in leidinggevende functies.",
+      periferie: "Vrouwen vormen de grootste groep, ook in leidinggevende functies.",
     },
   },
   {
@@ -106,12 +104,12 @@ export const AXES_TEAM = [
     shortLabel: "Seksualiteit",
     titel: "Seksuele oriëntatie",
     vraagdeel: "qua seksuele oriëntatie",
-    hint:
-      "Vaak niet zichtbaar: kijk naar wat in de cultuur als vanzelfsprekend geldt, niet naar individuen.",
+    hint: "Kijk naar wat in de cultuur als vanzelfsprekend geldt; vaak niet zichtbaar.",
     instructie: "Denk aan: waar horen collega's in jouw organisatie zichzelf bij?",
     opties: {
       centrum: "Volgens mijn indruk is heteroseksualiteit de onuitgesproken norm.",
-      periferie: "Volgens mijn indruk is de lhbtiq+-gemeenschap de grootste groep.",
+      periferie:
+        "Volgens mijn indruk is niet-heteroseksualiteit in de organisatie de grootste groep.",
     },
   },
   {
@@ -176,17 +174,17 @@ export const AXES_TEAM = [
   },
   {
     id: "migratie",
-    label: "Migratie",
-    shortLabel: "Migratie",
-    titel: "Migratieachtergrond",
-    vraagdeel: "qua migratieachtergrond",
+    label: "Paspoort",
+    shortLabel: "Paspoort",
+    titel: "Paspoort en verblijfsstatus",
+    vraagdeel: "qua paspoort en verblijfsstatus",
     hint:
-      "Het gaat om geboorteland van collega's en hun ouders, nooit om verblijfsstatus.",
+      "Gaat om wat het paspoort of de verblijfsstatus toestaat, niet om culturele achtergrond of uiterlijk.",
     instructie: "Kies waar volgens jou de grootste groep collega's zit.",
     opties: {
-      centrum: "De meeste collega's zijn in Nederland geboren, net als hun ouders.",
+      centrum: "De meeste collega's hebben een paspoort dat veel deuren opent.",
       periferie:
-        "De meeste collega's zijn zelf of via hun ouders buiten Nederland geboren.",
+        "De meeste collega's hebben een paspoort of verblijfsstatus die hun mogelijkheden beperkt.",
     },
   },
 ];

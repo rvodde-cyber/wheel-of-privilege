@@ -31,61 +31,60 @@ export const AXES_SELF = [
     id: "ouders",
     label: "Ouderlijke achtergrond",
     shortLabel: "Ouders",
-    hint: "Gaat om de opleiding en positie van je ouders of verzorgers, voor zover je die kent.",
-    instructie: "Kies wat het beste past bij je opvoeding.",
+    hint:
+      "Gaat om de hoogste opleiding van je ouders of verzorgers, voor zover je die kent. Geld en woning komen bij klasse aan bod.",
+    instructie: "Kies wat het beste past bij de hoogst opgeleide ouder of verzorger.",
     positions: {
-      center:
-        "Mijn ouders of verzorgers hadden hoger onderwijs afgerond en een stevige maatschappelijke of financiële positie.",
-      middle:
-        "Mijn ouders of verzorgers hadden middenbaar onderwijs en een stabiele maar bescheiden positie.",
+      center: "Minstens één ouder of verzorger had hoger onderwijs afgerond (hbo of wo).",
+      middle: "Mijn ouders of verzorgers hadden mbo 3-4 of havo/vwo als hoogste opleiding.",
       periphery:
-        "Mijn ouders of verzorgers hadden weinig formele opleiding en beperkte financiële en maatschappelijke middelen.",
+        "Mijn ouders of verzorgers hadden vmbo, mbo 1-2, praktijkonderwijs of geen diploma.",
     },
   },
   {
     id: "etniciteit",
-    label: "Herkomst en paspoort",
-    shortLabel: "Herkomst",
+    label: "Etniciteit / huidskleur",
+    shortLabel: "Etniciteit",
     hint:
-      "Machtsverschillen tussen witte Nederlanders onderling (regio, klasse, opleiding, ouders) komen terug bij de andere assen.",
-    instructie: "Denk aan hoe de samenleving je meestal behandelt en leest.",
+      "Het gaat om hoe je in de samenleving gelezen wordt, niet om je paspoort (dat komt bij Paspoort en verblijfsstatus aan bod). Machtsverschillen tussen witte Nederlanders onderling komen terug bij klasse, ouders, opleiding en taal.",
+    instructie: "Denk aan: hoe word je meestal gezien en behandeld?",
     positions: {
       center:
-        "Nederlands paspoort vanaf geboorte, ouders in Nederland geboren, en in de samenleving vanzelf als 'gewoon Nederlands' gezien",
+        "Ik word in Nederland vanzelf als 'gewoon Nederlands' gezien en hoef zelden uit te leggen waar ik vandaan kom.",
       middle:
-        "Nederlands of Europees paspoort, maar ik of mijn ouders komen uit het buitenland; ik word soms als 'anders' gezien",
+        "Ik word soms als 'anders' gezien, maar dat is niet het hele beeld dat mensen van mij hebben.",
       periphery:
-        "Ik word vaak als 'anders' gezien, of mijn paspoort of verblijfsstatus beperkt wat ik kan (reizen, werken, zekerheid)",
+        "Ik word vaak of structureel als 'anders' gezien vanwege mijn uiterlijk of huidskleur.",
     },
   },
   {
     id: "gender",
     label: "Gender",
     shortLabel: "Gender",
-    hint: "Ook onzichtbare kenmerken tellen mee. Kies wat in de praktijk voor jou merkbaar is.",
+    hint: "Het gaat om hoe je gezien en behandeld wordt, niet alleen om hoe je jezelf noemt.",
     instructie: "Denk aan: hoe word je meestal gezien en behandeld?",
     positions: {
-      center:
-        "Ik identificeer als man en word over het algemeen als man gezien — de norm in veel machtsstructuren.",
+      center: "Ik word als man gezien en behandeld.",
       middle:
-        "Mijn genderidentiteit of -expressie wijkt af van de dominante norm, maar ik ervaar dat zelden als belemmerend.",
+        "Mijn genderidentiteit of -expressie wijkt af van de norm, maar ik ervaar dat zelden als belemmerend.",
       periphery:
-        "Ik identificeer niet als man, of word structureel anders behandeld vanwege mijn gender.",
+        "Ik word vaak of structureel anders behandeld vanwege mijn gender (bijvoorbeeld als vrouw, non-binair of transgender).",
     },
   },
   {
     id: "seksualiteit",
     label: "Seksuele oriëntatie",
     shortLabel: "Seksualiteit",
-    hint: "Kies wat in de praktijk voor jou het zwaarst weegt in je dagelijks leven.",
+    hint:
+      "Denk aan: hoe vanzelfsprekend is jouw relatie of gezinssituatie in jouw omgeving? Voorbeelden van niet-heteroseksuele oriëntaties: homo, lesbisch, bi, pan, queer.",
     instructie: "Denk aan: waar hoor je zelf bij?",
     positions: {
       center:
         "Ik ben heteroseksueel en hoef mijn relatie of gezinssituatie zelden te verantwoorden of te verbergen.",
       middle:
-        "Ik identificeer als bi, pan of queer en ervaar acceptatie, maar niet altijd als vanzelfsprekend.",
+        "Mijn oriëntatie is niet heteroseksueel; ik ervaar acceptatie, maar niet altijd als vanzelfsprekend.",
       periphery:
-        "Ik identificeer als lhbtiq+ en ervaar dat mijn oriëntatie soms of vaak een bron van uitsluiting of onzichtbaarheid is.",
+        "Mijn oriëntatie is niet heteroseksueel; ik ervaar vaak uitsluiting of moet mezelf verbergen.",
     },
   },
   {
@@ -151,17 +150,18 @@ export const AXES_SELF = [
   },
   {
     id: "migratie",
-    label: "Immigratiestatus",
-    shortLabel: "Migratie",
-    hint: "Paspoort en herkomst komen ook bij de as Herkomst aan bod; hier gaat het om geboorte en nationaliteit.",
-    instructie: "Kies wat het beste past bij je situatie.",
+    label: "Paspoort en verblijfsstatus",
+    shortLabel: "Paspoort",
+    hint:
+      "Gaat om wat je paspoort of verblijfsstatus je toestaat (reizen, wonen, werken, zekerheid), niet om je culturele achtergrond.",
+    instructie: "Denk aan: welke deuren opent of sluit jouw paspoort?",
     positions: {
       center:
-        "Ik ben in Nederland geboren en mijn ouders ook; ik heb de Nederlandse nationaliteit.",
+        "Mijn paspoort opent veel deuren: ik kan vrij reizen, wonen en werken zonder visum of verblijfsvergunning.",
       middle:
-        "Ik ben in Nederland geboren, maar minstens één van mijn ouders is in een ander land geboren.",
+        "Ik heb een sterk paspoort, maar kreeg het via migratie of naturalisatie (of mijn ouders deden dat), en ik merk soms extra drempels.",
       periphery:
-        "Ik ben zelf in een ander land geboren, of mijn migratieachtergrond beïnvloedt mijn status of toegang.",
+        "Mijn paspoort of verblijfsstatus beperkt wat ik kan: reizen, wonen of werken is niet vanzelfsprekend of niet zeker.",
     },
   },
 ];
