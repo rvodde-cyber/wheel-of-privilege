@@ -61,11 +61,18 @@ export default function AxisSelector({
       {isTeam && (
         <>
           <p style={{ ...styles.vraag, ...(compact ? styles.vraagCompact : {}) }}>{vraagTekst}</p>
+          {axis.instructie && <p style={styles.instruction}>{axis.instructie}</p>}
           {showHint && axis.hint && <p style={styles.hint}>{axis.hint}</p>}
         </>
       )}
 
-      {!isTeam && instruction && <p style={styles.instruction}>{instruction}</p>}
+      {!isTeam && (
+        <>
+          {axis.instructie && <p style={styles.instruction}>{axis.instructie}</p>}
+          {!axis.instructie && instruction && <p style={styles.instruction}>{instruction}</p>}
+          {showHint && axis.hint && <p style={styles.hint}>{axis.hint}</p>}
+        </>
+      )}
 
       <div
         className={compact ? "wop-axis-options-compact" : undefined}

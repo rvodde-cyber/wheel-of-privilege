@@ -21,7 +21,7 @@ export const TUSSEN_DUIDING_TEMPLATE =
 export const AS_DUIDING = {
   opleiding: {
     center:
-      "Je opleiding kan je toegang geven tot de taal en codes van onderwijs en organisaties, vaak zonder dat dat opvalt.",
+      "Hoger onderwijs kan je toegang geven tot de taal en codes van organisaties, vaak zonder dat dat opvalt.",
     periphery:
       "Misschien heb je je kennis langs andere wegen opgebouwd dan via een diploma. Formele eisen kunnen dan drempels opwerpen die weinig zeggen over wat je kunt.",
   },
@@ -39,9 +39,9 @@ export const AS_DUIDING = {
   },
   etniciteit: {
     center:
-      "Het kan zijn dat je zelden wordt gezien als vertegenwoordiger van een groep en je achtergrond zelden hoeft uit te leggen.",
+      "Het kan zijn dat je zelden als 'anders' wordt gelezen en je herkomst zelden hoeft uit te leggen.",
     periphery:
-      "Je kunt te maken krijgen met aannames, extra zichtbaarheid of de vraag waar je 'echt' vandaan komt.",
+      "Je kunt te maken krijgen met aannames, extra zichtbaarheid of beperkingen door paspoort of verblijfsstatus.",
   },
   gender: {
     center:
@@ -57,9 +57,9 @@ export const AS_DUIDING = {
   },
   religie: {
     center:
-      "Feestdagen, ritmes en gewoonten in de meeste organisaties sluiten misschien aan bij hoe jij leeft.",
+      "Feestdagen, ritmes en gewoonten in de meeste organisaties sluiten misschien aan bij hoe jij leeft — ook als je niet-religieus bent.",
     periphery:
-      "Het kan zijn dat roosters, gewoonten of grappen geen rekening houden met jouw levensbeschouwing.",
+      "Het kan zijn dat roosters, gewoonten of grappen geen rekening houden met jouw levensbeschouwing of dat je die vaker moet uitleggen.",
   },
   taal: {
     center:
