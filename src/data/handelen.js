@@ -88,7 +88,8 @@ export const HANDELEN_PROFIELEN = {
         fase: "Wegen",
       },
       {
-        tekst: "Weet dat jouw ervaring waarde heeft in besluiten en discussies.",
+        tekst:
+          "Kies één moment deze maand waarop je jouw ervaring bewust inbrengt in een overleg of gesprek.",
         fase: "Handelen",
       },
     ],
