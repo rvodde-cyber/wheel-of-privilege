@@ -227,6 +227,19 @@ export default function TeamSurvey() {
                 <p style={styles.bodyText}>{conclusion.advies.onderbouwing}</p>
                 <h3 style={styles.subTitle}>Advies</h3>
                 <p style={styles.bodyText}>{conclusion.advies.advies}</p>
+                {conclusion.advies.eersteStappen && (
+                  <>
+                    <h3 style={styles.subTitle}>Eerste stappen</h3>
+                    <ul style={styles.kloofList}>
+                      {conclusion.advies.eersteStappen.map((stap) => (
+                        <li key={stap}>{stap}</li>
+                      ))}
+                    </ul>
+                    {conclusion.advies.eersteStappenOnderbouwing && (
+                      <p style={styles.bodyText}>{conclusion.advies.eersteStappenOnderbouwing}</p>
+                    )}
+                  </>
+                )}
               </>
             )}
           </section>
@@ -254,6 +267,19 @@ export default function TeamSurvey() {
                   <p style={styles.bodyText}>{kloof.advies.onderbouwing}</p>
                   <h3 style={styles.subTitle}>Advies</h3>
                   <p style={styles.bodyText}>{kloof.advies.advies}</p>
+                  {kloof.advies.eersteStappen && (
+                    <>
+                      <h3 style={styles.subTitle}>Eerste stappen</h3>
+                      <ul style={styles.kloofList}>
+                        {kloof.advies.eersteStappen.map((stap) => (
+                          <li key={stap}>{stap}</li>
+                        ))}
+                      </ul>
+                      {kloof.advies.eersteStappenOnderbouwing && (
+                        <p style={styles.bodyText}>{kloof.advies.eersteStappenOnderbouwing}</p>
+                      )}
+                    </>
+                  )}
                 </>
               )}
             </section>

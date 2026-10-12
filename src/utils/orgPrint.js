@@ -57,6 +57,15 @@ function lensLayers(selections) {
   ];
 }
 
+function eersteStappenBlock(advies) {
+  if (!advies?.eersteStappen?.length) return "";
+  const items = advies.eersteStappen.map((s) => `<li>${escapeHtml(s)}</li>`).join("");
+  const onder = advies.eersteStappenOnderbouwing
+    ? `<p>${escapeHtml(advies.eersteStappenOnderbouwing)}</p>`
+    : "";
+  return `<h3>Eerste stappen</h3><ul>${items}</ul>${onder}`;
+}
+
 function adviesBlock(advies) {
   if (!advies) return "";
   return `
@@ -64,7 +73,8 @@ function adviesBlock(advies) {
     <h3>Onderbouwing</h3>
     <p>${escapeHtml(advies.onderbouwing)}</p>
     <h3>Advies</h3>
-    <p>${escapeHtml(advies.advies)}</p>`;
+    <p>${escapeHtml(advies.advies)}</p>
+    ${eersteStappenBlock(advies)}`;
 }
 
 /**
@@ -137,7 +147,8 @@ export function printOrganisatiePdf({ selections, axes, orgCode = "", lensMode =
            <h3>Onderbouwing</h3>
            <p>${escapeHtml(kloof.advies.onderbouwing)}</p>
            <h3>Advies</h3>
-           <p>${escapeHtml(kloof.advies.advies)}</p>`
+           <p>${escapeHtml(kloof.advies.advies)}</p>
+           ${eersteStappenBlock(kloof.advies)}`
         : `<p class="warn">${escapeHtml(KLOOF_INSUFFICIENT_MESSAGE)}</p>`;
     kloofBlock = `<h2>Kloof tussen organisatie en top</h2>${body}`;
   }
