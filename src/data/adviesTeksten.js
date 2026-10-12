@@ -1,6 +1,8 @@
 import { BRONNEN_INCLUSIE } from "./inclusieVoordelen.js";
 
 const BRONNEN_KERN = [
+  "Centraal Bureau voor de Statistiek. (2020, 21 december). Meerderheid Nederlandse bevolking behoort niet tot religieuze groep. https://www.cbs.nl/nl-nl/nieuws/2020/51/meerderheid-nederlandse-bevolking-behoort-niet-tot-religieuze-groep",
+  "Centraal Bureau voor de Statistiek. (2022, juli). CBS introduceert nieuwe indeling bevolking naar herkomst. https://www.cbs.nl/nl-nl/nieuws/2022/07/cbs-introduceert-nieuwe-indeling-bevolking-naar-herkomst",
   "Collins, P. H. (2000). Black feminist thought: Knowledge, consciousness, and the politics of empowerment (2nd ed.). Routledge.",
   "Crenshaw, K. (1989). Demarginalizing the intersection of race and sex: A Black feminist critique of antidiscrimination doctrine, feminist theory and antiracist politics. University of Chicago Legal Forum, 1989(1), 139–167.",
   "Davidai, S., & Gilovich, T. (2016). The headwinds/tailwinds asymmetry: An availability bias in assessments of barriers and blessings. Journal of Personality and Social Psychology, 111(6), 835–851. https://doi.org/10.1037/pspa0000066",
@@ -23,6 +25,15 @@ export const BRONNEN_APA = [...new Set([...BRONNEN_KERN, ...BRONNEN_INCLUSIE])].
   bronSortKey(a).localeCompare(bronSortKey(b), "nl")
 );
 
+export const EERSTE_STAPPEN = [
+  "Bekijk wie meebeslist (samenstelling teams, besluitvorming).",
+  "Bespreek dit beeld met minimaal twee lagen of afdelingen.",
+  "Kies één meetbare actie voor het komende kwartaal (werving, doorstroom, vergaderstructuur).",
+];
+
+export const EERSTE_STAPPEN_ONDERBOUWING =
+  "Diversiteit werkt beter met inclusief klimaat (Nishii, 2013; Ely & Thomas, 2001).";
+
 /**
  * @param {'kloof' | 'beperkt' | 'geen'} niveau
  * @param {number} n
@@ -39,6 +50,8 @@ export function kloofAdvies(niveau, n, m) {
         "Een homogene top met een diverse werkvloer brengt het risico van tokenisme en ongelijke doorstroom (Kanter, 1977).",
       advies:
         "Bekijk doorstroom, werving en wie aan tafel zit bij besluiten; bespreek het beeld met verschillende lagen.",
+      eersteStappen: EERSTE_STAPPEN,
+      eersteStappenOnderbouwing: EERSTE_STAPPEN_ONDERBOUWING,
     },
     beperkt: {
       samenvatting:
@@ -46,6 +59,8 @@ export function kloofAdvies(niveau, n, m) {
       onderbouwing: "De verschillen zijn beperkt; ze kunnen samenhangen met specifieke teams of functies.",
       advies:
         "Verken of die verschillen samenhangen met specifieke functies of teams.",
+      eersteStappen: EERSTE_STAPPEN,
+      eersteStappenOnderbouwing: EERSTE_STAPPEN_ONDERBOUWING,
     },
     geen: {
       samenvatting:
@@ -54,6 +69,8 @@ export function kloofAdvies(niveau, n, m) {
         "Een gelijk beeld betekent niet dat iedereen dezelfde ervaring heeft, maar dat jouw indruk van werkvloer en top niet sterk uiteenloopt.",
       advies:
         "Vergelijk dit beeld met de omgeving en de doelgroep van de organisatie.",
+      eersteStappen: EERSTE_STAPPEN,
+      eersteStappenOnderbouwing: EERSTE_STAPPEN_ONDERBOUWING,
     },
   };
   return templates[niveau];
@@ -78,6 +95,8 @@ export function adviesVoorNiveau(niveau, n, m) {
       advies:
         "Gebruik dit beeld om te verkennen waar blinde vlekken kunnen zitten: wie valt buiten het zichtbare 'normaal'? " +
         "Betrek verschillende lagen en teams in het gesprek.",
+      eersteStappen: EERSTE_STAPPEN,
+      eersteStappenOnderbouwing: EERSTE_STAPPEN_ONDERBOUWING,
     },
     gemengd: {
       samenvatting:
@@ -86,6 +105,8 @@ export function adviesVoorNiveau(niveau, n, m) {
         "Gemengde patronen zijn gebruikelijk. Diversiteit levert vooral winst wanneer verschillende perspectieven invloed hebben (Ely & Thomas, 2001; Page, 2007).",
       advies:
         "Vergelijk per onderwerp waar het beeld uiteenloopt. Welke onderwerpen vragen om verder onderzoek of dialoog?",
+      eersteStappen: EERSTE_STAPPEN,
+      eersteStappenOnderbouwing: EERSTE_STAPPEN_ONDERBOUWING,
     },
     laag: {
       samenvatting:
@@ -95,6 +116,8 @@ export function adviesVoorNiveau(niveau, n, m) {
         "Inclusief klimaat blijft nodig om van diversiteit te profiteren (Nishii, 2013; van Knippenberg et al., 2004).",
       advies:
         "Bespreek welke onderwerpen het sterkst naar de periferie wijzen en welke structuren inclusie versterken.",
+      eersteStappen: EERSTE_STAPPEN,
+      eersteStappenOnderbouwing: EERSTE_STAPPEN_ONDERBOUWING,
     },
   };
 
