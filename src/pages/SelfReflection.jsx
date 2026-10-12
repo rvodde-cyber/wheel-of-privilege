@@ -3,6 +3,7 @@ import IntroScreen from "../components/IntroScreen.jsx";
 import AxisSelector from "../components/AxisSelector.jsx";
 import PowerWheel from "../components/PowerWheel.jsx";
 import IndividueleAnalyse from "../components/IndividueleAnalyse.jsx";
+import HandelenBlok from "../components/HandelenBlok.jsx";
 import { AXES_SELF } from "../data/axesSelf.js";
 import { BRONNEN_APA } from "../data/adviesTeksten.js";
 import { config, getFraming } from "../config.js";
@@ -14,6 +15,7 @@ export default function SelfReflection() {
   const [step, setStep] = useState("intro");
   const [axisIndex, setAxisIndex] = useState(0);
   const [selections, setSelections] = useState({});
+  const [handelenEersteStap, setHandelenEersteStap] = useState("");
   const wheelRef = useRef(null);
 
   useEffect(() => {
@@ -76,6 +78,7 @@ export default function SelfReflection() {
     setStep("intro");
     setAxisIndex(0);
     setSelections({});
+    setHandelenEersteStap("");
   }
 
   async function downloadWheel() {
@@ -142,10 +145,23 @@ export default function SelfReflection() {
 
           <IndividueleAnalyse selections={selections} axes={AXES_SELF} />
 
+          <HandelenBlok
+            selections={selections}
+            axes={AXES_SELF}
+            eersteStap={handelenEersteStap}
+            onEersteStapChange={setHandelenEersteStap}
+          />
+
           <div style={styles.actions}>
             <button
               type="button"
-              onClick={() => printIndividuPdf({ selections, axes: AXES_SELF })}
+              onClick={() =>
+                printIndividuPdf({
+                  selections,
+                  axes: AXES_SELF,
+                  handelenEersteStap,
+                })
+              }
               style={styles.primaryBtn}
             >
               {copy.downloadPdfLabel}

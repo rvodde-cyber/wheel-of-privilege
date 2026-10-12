@@ -3,6 +3,11 @@ import { renderToStaticMarkup } from "react-dom/server";
 import PowerWheel from "../components/PowerWheel.jsx";
 import { BRONNEN_APA } from "../data/adviesTeksten.js";
 import { buildIndividueleAnalyse } from "../data/analyseIndividu.js";
+import {
+  HANDELEN_KOP,
+  HANDELEN_PROFIELEN,
+  computeHandelenProfiel,
+} from "../data/handelen.js";
 import { config } from "../config.js";
 
 function escapeHtml(text) {
@@ -49,10 +54,40 @@ function vragenHtml(analyse) {
   return html;
 }
 
+function handelenHtml(selections, axes, handelenEersteStap) {
+  const key = computeHandelenProfiel(selections, axes);
+  const profiel = HANDELEN_PROFIELEN[key];
+  if (!profiel) return "";
+  const acties = profiel.acties
+    .map(
+      (a) =>
+        `<p class="fase">${escapeHtml(a.fase)}</p><p>${escapeHtml(a.tekst)}</p>`
+    )
+    .join("");
+  const reflectie = profiel.reflectievragen
+    .map(
+      (v) =>
+        `<p class="fase">${escapeHtml(v.fase)}</p><p>${escapeHtml(v.tekst)}</p>`
+    )
+    .join("");
+  const stap =
+    handelenEersteStap && handelenEersteStap.trim()
+      ? `<h3>Mijn eerste kleine stap</h3><p>${escapeHtml(handelenEersteStap.trim())}</p>`
+      : "";
+  return `
+    <h2>${escapeHtml(HANDELEN_KOP)}</h2>
+    <p class="opening">${escapeHtml(profiel.inleiding)}</p>
+    <h3>${escapeHtml(profiel.titel)}</h3>
+    ${acties}
+    <h3>Reflectie</h3>
+    ${reflectie}
+    ${stap}`;
+}
+
 /**
- * @param {{ selections: Record<string, string>, axes: { id: string, label: string }[] }} params
+ * @param {{ selections: Record<string, string>, axes: { id: string, label: string }[], handelenEersteStap?: string }} params
  */
-export function printIndividuPdf({ selections, axes }) {
+export function printIndividuPdf({ selections, axes, handelenEersteStap = "" }) {
   const analyse = buildIndividueleAnalyse(selections, axes);
 
   const wheelHtml = renderToStaticMarkup(
@@ -101,6 +136,7 @@ export function printIndividuPdf({ selections, axes }) {
 
   bodySections += vragenHtml(analyse);
   bodySections += `<p class="opening closing">${escapeHtml(analyse.afsluiting)}</p>`;
+  bodySections += handelenHtml(selections, axes, handelenEersteStap);
 
   const bronnen = BRONNEN_APA.map((bron) => `<li>${escapeHtml(bron)}</li>`).join("");
 
