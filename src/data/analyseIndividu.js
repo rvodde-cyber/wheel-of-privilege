@@ -39,9 +39,9 @@ export const AS_DUIDING = {
   },
   etniciteit: {
     center:
-      "Het kan zijn dat je zelden als 'anders' wordt gelezen en je herkomst zelden hoeft uit te leggen.",
+      "Het kan zijn dat je zelden als 'anders' wordt gelezen en zelden hoeft uit te leggen waar je vandaan komt.",
     periphery:
-      "Je kunt te maken krijgen met aannames, extra zichtbaarheid of beperkingen door paspoort of verblijfsstatus.",
+      "Je kunt te maken krijgen met aannames, extra zichtbaarheid of de vraag waar je 'echt' vandaan komt.",
   },
   gender: {
     center:
@@ -81,9 +81,9 @@ export const AS_DUIDING = {
   },
   migratie: {
     center:
-      "Misschien hoef je zelden na te denken over papieren, nationaliteit of waar je 'eigenlijk' thuishoort.",
+      "Misschien hoef je zelden na te denken over visa, verblijfsvergunningen of wat je paspoort je toestaat.",
     periphery:
-      "Het kan zijn dat je migratieachtergrond of je status vragen oproept die anderen niet krijgen, ook als je hier geboren bent of er al lang woont.",
+      "Het kan zijn dat je paspoort of verblijfsstatus extra stappen, onzekerheid of drempels geeft die anderen niet ervaren.",
   },
 };
 
